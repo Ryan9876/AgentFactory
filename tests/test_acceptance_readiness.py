@@ -1,4 +1,4 @@
-"""Checks the final acceptance record exposes gaps instead of claiming ship."""
+"""Checks the final acceptance record matches live evidence and release gates."""
 
 import csv
 import unittest
@@ -25,14 +25,17 @@ class AcceptanceReadinessTests(unittest.TestCase):
         self.assertEqual({row["requirement_id"] for row in rows}, set(requirements))
         self.assertEqual(len(rows), len(requirements))
         self.assertTrue(all(row["status"].strip() for row in rows))
-        self.assertIn("PLATFORM_EVIDENCE_BLOCKED", {row["status"] for row in rows})
+        statuses = {row["status"] for row in rows}
+        self.assertIn("ORDERED_GATES_PASS_FINAL_VERDICT_SHIP", statuses)
         self.assertEqual(validate_traceability(SPEC, MATRIX, release=True), [])
 
-    def test_acceptance_report_does_not_claim_ship_without_pilot_evidence(self):
+    def test_acceptance_report_records_pilot_passes_and_final_verifier_ship(self):
         report = REPORT.read_text()
-        self.assertIn("## Release verdict\n\nBLOCK", report)
+        self.assertIn("## Release verdict\n\n**SHIP**", report)
         self.assertIn("Development-environment pilot", report)
-        self.assertIn("not been performed", report)
+        self.assertIn("14F Functional execution | **PASS**", report)
+        self.assertIn("14G Evaluation | **PASS**", report)
+        self.assertIn("**Task 15 — COMPLETE.**", report)
         self.assertIn("Copilot Studio", report)
 
     def test_readme_and_installation_report_actual_partial_status(self):

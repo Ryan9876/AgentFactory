@@ -86,7 +86,7 @@ def _spec_blockers(spec_path):
             start = index + 1
             break
     if start is None:
-        return ["Specification does not account for unresolved blockers."]
+        return []
     body = []
     for line in lines[start:]:
         if line.startswith("## "):

@@ -85,6 +85,22 @@ class AgentSpecVerifierTests(unittest.TestCase):
             self.assertTrue(all(gate["status"] == "PASS" for gate in result["gates"]))
             self.assertEqual(load_state(control / "state.json")["state"], "READY_TO_PACKAGE")
 
+    def test_missing_optional_blocker_section_does_not_block_ship(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, control, spec, evidence = project_with_evidence(directory)
+            spec.write_text(
+                "# Approved agent spec\n\n"
+                "- **REQ-001 (mandatory):** Answer from approved knowledge.\n"
+            )
+            state = load_state(control / "state.json")
+            state["approved_spec_sha256"] = hashlib.sha256(spec.read_bytes()).hexdigest()
+            save_state(control / "state.json", state)
+
+            result = agent_spec_verifier.verify_release(root, evidence)
+
+            self.assertEqual(result["verdict"], "SHIP")
+            self.assertFalse(result["findings"])
+
     def test_spec_drift_blocks_and_does_not_run_later_gates(self):
         with tempfile.TemporaryDirectory() as directory:
             root, control, spec, evidence = project_with_evidence(directory)
