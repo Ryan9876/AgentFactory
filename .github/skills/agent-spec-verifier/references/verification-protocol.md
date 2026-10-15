@@ -1,0 +1,3 @@
+# Verification protocol — planned, not implemented
+
+Run checks in this exact order: spec integrity → requirement coverage → platform validation → functional verification → evaluation → resilience review → verdict. Hash mismatch sets `SPEC_CHANGED` and blocks until reapproval. Evaluation covers happy paths, variants, ambiguity, missing inputs, grounding, tool selection, failures, permissions, side effects, out-of-scope, and applicable safety/trust scenarios. Use approved project quality thresholds; do not invent them. Remediate at the smallest owning component, retest it, and rerun required release tests.

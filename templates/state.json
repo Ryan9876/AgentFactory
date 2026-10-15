@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "state": "OBJECTIVE_CAPTURED",
+  "project_id": null,
+  "target_environment": null,
+  "approved_spec_sha256": null,
+  "manifest_path": "build-manifest.md",
+  "traceability_path": "traceability.csv",
+  "blockers": [],
+  "updated_at": null
+}

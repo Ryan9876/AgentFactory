@@ -1,0 +1,3 @@
+# Build routing — planned, not implemented
+
+Preflight the confirmed Development environment and load/check only capabilities required by the approved architecture. Generate dependency-ordered tasks from the spec, mapping each task to an owning Microsoft capability and relevant requirement IDs. Pass only the task context and relevant requirements to that capability. Record artifact/evidence and status as work completes. On resume, validate spec hash, inspect existing platform artifacts, reuse completed verified work, and continue at the first incomplete component. Never fabricate tenant facts. Production deployment and organization-wide publication need explicit approval.
