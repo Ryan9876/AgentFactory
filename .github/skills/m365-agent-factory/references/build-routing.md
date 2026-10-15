@@ -1,3 +1,28 @@
-# Build routing — planned, not implemented
+# Build routing contract
 
-Preflight the confirmed Development environment and load/check only capabilities required by the approved architecture. Generate dependency-ordered tasks from the spec, mapping each task to an owning Microsoft capability and relevant requirement IDs. Pass only the task context and relevant requirements to that capability. Record artifact/evidence and status as work completes. On resume, validate spec hash, inspect existing platform artifacts, reuse completed verified work, and continue at the first incomplete component. Never fabricate tenant facts. Production deployment and organization-wide publication need explicit approval.
+## Before routing
+
+1. Confirm the user-selected target; Development is the default. Do not infer an environment from a saved profile.
+2. Verify the approved spec SHA-256 before initial build or resume. A mismatch sets `SPEC_CHANGED` and blocks work until explicit reapproval.
+3. Load/check only capabilities required by the approved architecture, using current registry evidence and the target environment's prerequisites.
+4. Generate dependency-ordered manifest tasks mapped to stable capability intents and only relevant requirement IDs.
+
+## Route each manifest task
+
+- Select the smallest capability that owns the platform operation; Microsoft capabilities own authoring, flow/data work, evaluation, validation, and ALM.
+- Pass only the task's input/output, relevant requirement IDs, approved context, dependencies, and existing artifact evidence. Do not pass unrelated project context.
+- Resolve the stable ID through `capability-registry.json` and current provider evidence. Keep provider/tool details out of requirement IDs and architecture intent.
+- Record provider selection, evidence status, prerequisites, output artifact, implementation evidence, and status in the manifest and traceability record.
+- If an unknown capability intent is requested, or a required provider is unavailable, mark only the dependent task `BLOCKED`, record the concrete reason and owner, and continue independent tasks where safe. Do not silently fall back or fabricate a provider. Revisit architecture only through an explicit documented decision.
+
+## Capability intent route matrix
+
+See `capability-routes.csv` for task patterns, capability intent, relevant requirement IDs, focused context, and unavailable behavior. The matrix covers Copilot Studio authoring/testing, Power Automate, Dataverse, evaluation, and solution ALM. It is routing guidance, not proof that an operation is authorized or available in the selected environment.
+
+## Harness decision
+
+Standard Copilot Studio is the default. A GHCP-style harness is routed only when explicitly requested or when a material architectural advantage is documented and required tooling, maturity, and compatibility are verified. A listed-but-unavailable plugin cannot satisfy that gate.
+
+## Resume
+
+Recheck spec integrity, read persisted state and manifest, inspect existing platform artifacts, and verify evidence for completed work. Reuse only completed work with inspectable verification evidence. Resume at the first incomplete dependency-ready task; do not repeat a side effect when its prior outcome is uncertain.
