@@ -38,3 +38,13 @@ Observed 2026-10-14. These results are environment-specific and should be refres
 | Azure CLI / Power Automate identity | Available through FlowAgent; no target selected | FlowAgent doctor reported Azure CLI sign-in, token acquisition, and identity matching as passing. It reported no current Power Automate environment. No tenant or environment identifiers are stored in this repository. |
 
 The PAC CLI `--version` and `version` forms are not valid commands in the installed 2.13.1 build; `pac help` prints the version. No custom wrapper or dependency was added. A local `az version` attempt was blocked while Azure CLI tried to write its profile diagnostic log, despite FlowAgent's successful read-only auth checks; this did not establish an Azure CLI auth failure.
+
+## Deterministic helper usage
+
+After implementation, calculate the generated project's specification digest with:
+
+```sh
+python3 scripts/spec_hash.py [--project-root PATH] [--approved-hash SHA256]
+```
+
+The root defaults to the current directory and the helper reads `.agent-factory/spec.md` as bytes. Success prints only the lowercase digest. When `--approved-hash` is supplied, a mismatch prints `SPEC_CHANGED` and exits nonzero. A missing or unreadable spec produces a diagnostic on stderr. These commands operate on local files and do not access Microsoft services.
