@@ -1,0 +1,16 @@
+{
+  "objective": "Build an HR policy agent using SharePoint policy documents.",
+  "status": "DECIDED_WITH_UNRESOLVED_DEPENDENCIES",
+  "unresolved_blockers": [],
+  "decisions": {
+    "harness": {"selection": "Standard Copilot Studio", "rationale": "Default harness meets the stated conversational knowledge need; no alternative was requested or justified.", "dependency": "Validate supported authoring access during preflight.", "evidence_status": "not_yet_verified"},
+    "knowledge": {"selection": "SharePoint policy documents", "rationale": "The objective names this source for searchable factual HR policy answers.", "dependency": "Confirm authoritative site/library and access in Development preflight.", "evidence_status": "not_yet_verified"},
+    "skills": {"selection": "Not required", "rationale": "No reusable multi-step procedure is requested.", "evidence_status": "not_required"},
+    "tools_actions": {"selection": "Not required", "rationale": "The objective requests policy answers and names no live action or computation.", "evidence_status": "not_required"},
+    "power_automate": {"selection": "Not required", "rationale": "No branching, approval, connector workflow, or asynchronous processing is stated.", "evidence_status": "not_required"},
+    "dataverse_state": {"selection": "Not required", "rationale": "No structured application data or durable workflow state is required.", "evidence_status": "not_required"},
+    "agents": {"selection": "One agent; no child agent", "rationale": "The objective has one responsibility and no independent boundary.", "evidence_status": "not_required"},
+    "external_integrations": {"selection": "SharePoint knowledge source only", "rationale": "This is the only named source; no additional integration is justified.", "dependency": "Exact source and access remain unverified.", "evidence_status": "not_yet_verified"},
+    "custom_development": {"selection": "None", "rationale": "Native knowledge configuration is the lowest-complexity fit; no capability gap is identified.", "evidence_status": "not_required"}
+  }
+}

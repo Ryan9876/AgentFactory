@@ -1,0 +1,16 @@
+{
+  "objective": "Help service-desk users troubleshoot incidents from internal documentation and open an engineering ticket when escalation is required.",
+  "status": "CLARIFICATION_REQUIRED",
+  "unresolved_blockers": ["Identify the authoritative ticket system, supported create operation, action boundary, and identity before selecting an executable integration."],
+  "decisions": {
+    "harness": {"selection": "Standard Copilot Studio", "rationale": "Default harness is sufficient absent a stated architectural reason to use another harness.", "dependency": "Validate supported authoring access during preflight.", "evidence_status": "not_yet_verified"},
+    "knowledge": {"selection": "Internal incident documentation", "rationale": "The objective explicitly requires troubleshooting grounded in internal documentation.", "dependency": "Identify authoritative location and access during preflight.", "evidence_status": "not_yet_verified"},
+    "skills": {"selection": "Procedural troubleshooting skill if steps are reusable", "rationale": "A skill is justified only if incident procedures provide reusable multi-step guidance.", "dependency": "Inspect supplied procedures before confirming.", "evidence_status": "not_yet_verified"},
+    "tools_actions": {"selection": "Ticket creation action, provider and operation pending clarification", "rationale": "Opening an engineering ticket is an external side effect requiring an approved action path.", "dependency": "Ticket system, operation, identity, permissions, and confirmation policy are unresolved.", "evidence_status": "blocked"},
+    "power_automate": {"selection": "Unresolved; choose only if deterministic workflow needs branching, multiple connectors, retries, or recovery", "rationale": "The objective alone does not establish workflow complexity.", "dependency": "Resolve ticket operation and behavior before selecting the execution path.", "evidence_status": "not_yet_verified"},
+    "dataverse_state": {"selection": "Not required on current facts", "rationale": "No structured durable application data or workflow state is stated.", "evidence_status": "not_required"},
+    "agents": {"selection": "One agent; no child agent", "rationale": "Troubleshooting and escalation belong to one service-desk responsibility.", "evidence_status": "not_required"},
+    "external_integrations": {"selection": "None selected until ticket system is named", "rationale": "The objective does not identify a provider or authoritative system.", "dependency": "Clarify system and allowed ticket operation.", "evidence_status": "blocked"},
+    "custom_development": {"selection": "None proposed", "rationale": "Evaluate native action, connector, and flow options after the required operation is known.", "evidence_status": "not_required"}
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "objective": "Build a refund agent.",
+  "status": "CLARIFICATION_REQUIRED",
+  "unresolved_blockers": ["Refund authority and eligibility are unknown; do not design or initiate a refund action without the business rules, commerce or payment system, identity, permissions, confirmation, and approval boundary."],
+  "decisions": {
+    "harness": {"selection": "Standard Copilot Studio (provisional default)", "rationale": "Use the default for planning unless clarification establishes a material reason to choose another harness.", "dependency": "Revisit after objective clarification.", "evidence_status": "not_yet_verified"},
+    "knowledge": {"selection": "Deferred", "rationale": "No approved policy or authoritative source was named.", "dependency": "Identify an authoritative policy/source during clarification.", "evidence_status": "blocked"},
+    "skills": {"selection": "Deferred", "rationale": "No procedure is defined from which to justify a reusable skill.", "dependency": "Clarify user scenario and process.", "evidence_status": "not_yet_verified"},
+    "tools_actions": {"selection": "None selected", "rationale": "A refund action is consequential and its authority, system, and confirmation boundary are unknown.", "dependency": "Resolve policy, action scope, identity, permissions, confirmation, and approval.", "evidence_status": "blocked"},
+    "power_automate": {"selection": "Deferred", "rationale": "No workflow or supported system operation is specified.", "dependency": "Reassess after clarification.", "evidence_status": "not_yet_verified"},
+    "dataverse_state": {"selection": "None selected", "rationale": "No durable state requirement or ownership is specified.", "dependency": "Reassess only if clarified requirements need persistent structured state.", "evidence_status": "not_required"},
+    "agents": {"selection": "One agent provisionally; no child agent", "rationale": "No meaningful responsibility or security boundary is known.", "dependency": "Reassess after clarification only if a boundary emerges.", "evidence_status": "not_yet_verified"},
+    "external_integrations": {"selection": "None selected", "rationale": "The objective does not identify any commerce or payment system; none may be invented.", "dependency": "Ask which authoritative system, if any, is in scope.", "evidence_status": "blocked"},
+    "custom_development": {"selection": "None proposed", "rationale": "Requirements are unresolved and no capability gap has been demonstrated.", "evidence_status": "not_required"}
+  }
+}

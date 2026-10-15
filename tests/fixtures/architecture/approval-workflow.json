@@ -1,0 +1,16 @@
+{
+  "objective": "Collect a request, determine the required approver, obtain approval, record the outcome, and notify the requester.",
+  "status": "DECIDED_WITH_UNRESOLVED_DEPENDENCIES",
+  "unresolved_blockers": ["Identify the authoritative system that owns request and approval state; use Dataverse only if no suitable owner exists and its data requirements justify it."],
+  "decisions": {
+    "harness": {"selection": "Standard Copilot Studio", "rationale": "The conversational agent is the request interface and no alternative harness has a material advantage on current facts.", "dependency": "Validate supported authoring access during preflight.", "evidence_status": "not_yet_verified"},
+    "knowledge": {"selection": "Not required unless approver policy is maintained as reference content", "rationale": "The objective does not name a knowledge source; approver determination may instead be governed workflow logic or an authoritative directory.", "dependency": "Clarify the authoritative approver rule and data source.", "evidence_status": "not_yet_verified"},
+    "skills": {"selection": "Not required", "rationale": "No reusable procedural content is stated beyond workflow behavior.", "evidence_status": "not_required"},
+    "tools_actions": {"selection": "Agent request collection and status interaction", "rationale": "The agent collects user inputs while deterministic actions are assigned to the workflow.", "dependency": "Confirm request fields and channel during specification.", "evidence_status": "not_yet_verified"},
+    "power_automate": {"selection": "Power Automate workflow", "rationale": "Approver routing, approval, recording, notification, and recovery form deterministic multi-step behavior.", "dependency": "Resolve connectors and operation details during preflight; none are assumed here.", "evidence_status": "not_yet_verified"},
+    "dataverse_state": {"selection": "Use the authoritative persistent state owner; Dataverse only if no suitable owner exists", "rationale": "The process requires durable request and approval state, but no owner is named yet. Dataverse is conditional, not assumed.", "dependency": "Identify existing authoritative state system and assess structured data/security needs.", "evidence_status": "not_yet_verified"},
+    "agents": {"selection": "One agent; no child agent", "rationale": "The request and approval lifecycle is one responsibility; the flow provides the execution boundary.", "evidence_status": "not_required"},
+    "external_integrations": {"selection": "Not selected until authoritative state, approver, and notification systems are identified", "rationale": "No system, connector, or operation is supplied by the objective.", "dependency": "Resolve system owners and permitted operations in clarification/preflight.", "evidence_status": "not_yet_verified"},
+    "custom_development": {"selection": "None proposed", "rationale": "Native agent, approval, and flow capabilities should be assessed before custom development.", "evidence_status": "not_required"}
+  }
+}
