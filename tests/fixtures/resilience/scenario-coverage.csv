@@ -1,0 +1,62 @@
+scenario,control,expected_review_evidence
+knowledge-only,identity,SharePoint access context and source authorization are identified or left as preflight dependencies.
+knowledge-only,least_privilege,Source access is limited to approved HR policy content and the appropriate audience.
+knowledge-only,context,User access is distinguished from any service connection used to retrieve knowledge.
+knowledge-only,unavailable_dependencies,Unavailable or inaccessible policy source produces a safe response and does not imply an empty authoritative answer.
+knowledge-only,permissions,Missing or revoked SharePoint access stops grounded answering and routes to the owner.
+knowledge-only,errors,Source failures are explained without claiming unsupported policy facts.
+knowledge-only,configuration,Environment-specific source location and connection configuration are validated in preflight.
+knowledge-only,secrets,Any connection authentication stays in the platform secure connection mechanism.
+knowledge-only,observability,Source/auth failures can be correlated without logging policy-sensitive content unnecessarily.
+knowledge-only,dlp_policy,Applicable data policies are checked through observable evidence or flagged for administrator validation.
+knowledge-only,escalation,Unknown answers and source failures route to an approved HR contact path once identified.
+it-ticketing,identity,Ticket creation identity and audit context are specified.
+it-ticketing,least_privilege,Ticket action can create only the approved ticket type and fields.
+it-ticketing,context,User-context versus service-context access is decided for both knowledge and ticket action.
+it-ticketing,confirmation,User reviews the target, summary, and submitted ticket details before consequential creation.
+it-ticketing,retries,Transient create failures are retried only when the operation is known safe.
+it-ticketing,retry_safety,Ticket create retry behavior is based on verified connector/system semantics.
+it-ticketing,idempotency,Supported request identity or idempotency behavior prevents repeat ticket creation.
+it-ticketing,duplicate_prevention,Repeated turns and ambiguous timeouts do not silently create duplicate tickets.
+it-ticketing,partial_failure,Ticket result is distinguished from successful troubleshooting guidance when creation fails.
+it-ticketing,recovery,Unknown ticket outcome is reconciled or routed for manual review before replay.
+it-ticketing,timeouts,Timeout outcome and downstream cancellation behavior are documented.
+it-ticketing,unavailable_dependencies,Unavailable documentation or ticket system has a safe stop and user-facing path.
+it-ticketing,permissions,Missing ticket or knowledge permission stops the affected operation.
+it-ticketing,errors,Failure response states what completed and what did not.
+it-ticketing,configuration,Connection references and environment configuration are validated without guessed names.
+it-ticketing,secrets,Ticket connection credentials are kept outside prompts, logs, state, and source.
+it-ticketing,observability,Agent turn and ticket run can be correlated for support where tooling permits.
+it-ticketing,dlp_policy,Observable DLP constraints are checked; hidden policy is an admin dependency.
+it-ticketing,escalation,Ticketing failures and unresolved incidents route to the designated owner.
+approval-workflow,identity,Requester and approver identity are preserved through the approval lifecycle.
+approval-workflow,least_privilege,Requester, approver, and workflow identities have scoped permissions.
+approval-workflow,context,User-context versus service-context behavior is explicit for request, approval, write, and notification.
+approval-workflow,confirmation,Requester reviews the submitted request and approver reviews the decision context before action.
+approval-workflow,retries,Retries are bounded by authoritative platform/project guidance and stop on permanent errors.
+approval-workflow,retry_safety,Approval, state write, and notification retry semantics are assessed individually.
+approval-workflow,idempotency,Each request/approval transition has a stable identity where supported.
+approval-workflow,duplicate_prevention,Replays and duplicate submissions do not create repeated approvals or notifications.
+approval-workflow,partial_failure,State is explicit when approval completes but recording or notification fails.
+approval-workflow,recovery,Failed steps resume or reconcile from authoritative state without repeating completed effects.
+approval-workflow,timeouts,Pending approvals and timed-out connector calls have distinct states and owners.
+approval-workflow,unavailable_dependencies,Approver directory, approval service, state owner, and notification dependencies fail safely.
+approval-workflow,permissions,Requester/approver authorization and workflow write permissions are verified.
+approval-workflow,errors,User sees whether request is pending, approved, rejected, or requires recovery.
+approval-workflow,configuration,Connections, environment variables, and state owner are resolved before build.
+approval-workflow,secrets,Connection secrets use approved secure platform configuration and are never copied into state.
+approval-workflow,observability,Request and workflow run correlation supports recovery while minimizing personal data.
+approval-workflow,dlp_policy,Observable DLP/policy conditions are checked or explicitly assigned for admin review.
+approval-workflow,escalation,Stuck approvals, state conflicts, and failed notifications have named escalation owners.
+ambiguous-objective,confirmation,No refund action is proposed or executed before action and approval boundaries are clarified.
+ambiguous-objective,permissions,Do not assume authorization or payment-system access from the vague objective.
+ambiguous-objective,unavailable_dependencies,Keep missing policy/system facts as blockers instead of fabricating a service.
+ambiguous-objective,errors,Explain that architecture is blocked by unresolved business rules and system ownership.
+ambiguous-objective,escalation,Route unresolved refund authority to the business owner once identified.
+interrupted-build,duplicate_prevention,Inspect persisted task state and verified artifacts before resuming to avoid repeated platform actions.
+interrupted-build,partial_failure,Record completed, failed, and unknown component outcomes distinctly.
+interrupted-build,recovery,Resume from the first incomplete component after integrity checks and artifact inspection.
+interrupted-build,observability,Preserve task and platform correlation evidence needed to inspect prior runs.
+spec-drift,duplicate_prevention,Stop build/resume after a spec hash mismatch before replaying any component action.
+spec-drift,recovery,Set SPEC_CHANGED and require explicit reapproval before continuing.
+spec-drift,errors,Report the integrity mismatch and safe next step without implying implementation success.
