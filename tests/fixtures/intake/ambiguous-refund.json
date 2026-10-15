@@ -1,0 +1,56 @@
+{
+  "objective": "Build a refund agent.",
+  "facts": [
+    "The user wants an agent related to refunds."
+  ],
+  "assumptions": [],
+  "unknowns": [
+    {
+      "id": "UNK-001",
+      "prompt": "Who will use the agent, and in which channel?",
+      "material_impact": true,
+      "ask_now": true,
+      "recommended_default": "Internal support staff in a supported internal channel, if that matches the intended audience."
+    },
+    {
+      "id": "UNK-002",
+      "prompt": "Which authoritative commerce or payment system, if any, contains order and refund data?",
+      "material_impact": true,
+      "ask_now": true,
+      "recommended_default": "Start with read-only refund guidance and no system integration until an authoritative system is named."
+    },
+    {
+      "id": "UNK-003",
+      "prompt": "What refund policy and eligibility rules should the agent apply?",
+      "material_impact": true,
+      "ask_now": true,
+      "recommended_default": "Provide general guidance from an approved policy source; do not decide or execute refunds."
+    },
+    {
+      "id": "UNK-004",
+      "prompt": "May the agent initiate a refund, or should it only prepare or route a request? Who must approve it?",
+      "material_impact": true,
+      "ask_now": true,
+      "recommended_default": "Read-only guidance; do not initiate a refund until policy, system, permissions, confirmation, and approval are defined."
+    },
+    {
+      "id": "UNK-005",
+      "prompt": "What identity should be used for any future data access or action?",
+      "material_impact": true,
+      "ask_now": true,
+      "recommended_default": "Use the user context where supported; defer exact connection and permission validation to preflight."
+    }
+  ],
+  "clarification_rounds": [
+    {
+      "questions": [
+        "Who will use this agent and where? Which authoritative commerce or payment system and approved refund policy should it use? Should it only explain or prepare requests, or may it initiate refunds; what confirmation and approval are required? What identity should access the system? Until these are specified, may we use the safe default of read-only guidance with no refund execution?"
+      ],
+      "prompt": "Who will use this agent and where? Which authoritative commerce or payment system and approved refund policy should it use? Should it only explain or prepare requests, or may it initiate refunds; what confirmation and approval are required? What identity should access the system? Until these are specified, may we use the safe default of read-only guidance with no refund execution?",
+      "unknown_refs": ["UNK-001", "UNK-002", "UNK-003", "UNK-004", "UNK-005"],
+      "recommended_default": "Read-only guidance, no invented system integration, and no refund execution until the source, policy, permissions, confirmations, and approvals are approved."
+    }
+  ],
+  "integrations_to_create": [],
+  "architecture_can_start": false
+}

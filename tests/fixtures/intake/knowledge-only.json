@@ -1,0 +1,26 @@
+{
+  "objective": "Build an HR policy agent using SharePoint policy documents.",
+  "facts": [
+    "The requested agent concerns HR policy.",
+    "SharePoint policy documents"
+  ],
+  "assumptions": [
+    {
+      "value": "The initial experience is for employees seeking policy answers.",
+      "basis": "Conventional low-risk audience assumption; confirm in the specification if it changes the experience."
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "UNK-001",
+      "prompt": "Which SharePoint location and access configuration should be used?",
+      "material_impact": true,
+      "ask_now": false,
+      "recommended_default": "Use the authoritative HR policy library identified by the owner during Development preflight.",
+      "disposition": "Resolve the exact site/library and access during Development preflight; do not ask the user to repeat the already supplied source type."
+    }
+  ],
+  "clarification_rounds": [],
+  "integrations_to_create": [],
+  "architecture_can_start": true
+}

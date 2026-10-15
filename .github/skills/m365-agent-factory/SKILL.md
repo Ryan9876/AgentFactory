@@ -1,29 +1,56 @@
 ---
 name: m365-agent-factory
-description: Scaffold for the M365 Agent Factory control-plane workflow.
+description: Turn a business objective into a clarified, approved, and verifiable plan for a Microsoft 365 Copilot agent.
 ---
 
-# Status: NOT IMPLEMENTED
-
-This file defines the planned skill boundary only. It does not yet perform intake, architecture, specification generation, approval, or orchestration.
+# M365 Agent Factory
 
 ## Purpose
 
-Own objective capture, requirements extraction, minimal clarification, architecture selection, specification drafting, approval gating, and implementation orchestration for M365 Copilot agents.
+Guide the control-plane lifecycle: objective intake, requirement extraction, minimal clarification, architecture selection, specification, explicit approval, and implementation orchestration. Microsoft capabilities own platform authoring, execution, evaluation, and ALM.
 
 ## Boundaries
 
-The skill coordinates other capabilities; Microsoft tools perform platform work. It must not invent environment facts or begin implementation before approval. It does not implement an agent runtime or platform API wrapper.
+This is a procedural orchestration skill, not an agent runtime, platform SDK, or substitute for Copilot Studio, Power Automate, Dataverse, evaluation tools, or PAC CLI. Do not invent tenant or environment facts, connector operations, schemas, credentials, permissions, or URLs. Never begin implementation before the specification is approved. Production deployment and organization-wide publication require explicit approval.
 
-## Inputs and outputs (planned)
+## Intake procedure
 
-- Inputs: ordinary-language business objective, supplied context, answers/assumptions, target environment when known.
-- Outputs: persisted objective and clarifications, architecture decision, approved specification/hash, dependency-ordered build manifest, state and routing records.
+1. Inspect all supplied conversation and project context before asking anything. Reuse answers and facts already present; do not ask the user to repeat them.
+2. Record the objective and source material in the project's `.agent-factory/objective.md` using `templates/objective.md`.
+3. Separate facts, assumptions, and unknowns. Label each assumption and explain its source or safe-default basis. Never present an assumption as a user-provided fact.
+4. For each unknown, record whether its answer could materially change required behavior, architecture, authoritative data, identity/authentication, permissions, consequential actions, user experience, evaluation, or deployment.
+5. Ask only about unknowns with material impact that must be resolved now. Prefer one grouped clarification round. For each question, explain the decision it affects and offer safe recommended defaults when available. Defaults are proposals, not accepted answers.
+6. Defer details that can be safely established during architecture or preflight. Record the deferral and the stage that must resolve it instead of asking prematurely.
+7. Do not draft architecture while a consequential unknown blocks a sound architecture decision. Do not draft the implementation specification before architecture is recorded. If a second clarification round is needed, limit it to genuinely blocking unknowns revealed by the first answers.
+8. Persist answers and update the intake disposition. Proceed to architecture only when no blocking consequential unknown remains or the user explicitly accepts a documented assumption.
 
-## Dependencies (planned, unverified)
+## Inputs
 
-Verified host skill loading; Microsoft Copilot Studio, Power Automate, Dataverse, evaluation and ALM capabilities as selected by architecture; project artifact templates and deterministic helpers.
+- Ordinary-language business objective.
+- Conversation, repository, and project context already supplied.
+- Clarification responses and explicitly accepted assumptions.
+- Environment or capability evidence when available.
+
+## Outputs
+
+- Persisted objective, context inventory, explicit facts, assumptions, unknowns, questions, and responses.
+- Intake disposition: `CLARIFICATION_REQUIRED` or ready for architecture (`ARCHITECTING`).
+- Later lifecycle artifacts are governed by the specification and approval gates.
+
+## Dependencies
+
+- Skill host capable of loading repository skills (host discovery is environment-specific).
+- Project control-plane templates and persisted `.agent-factory/` directory.
+- Microsoft platform capabilities only when selected by an approved architecture; resolve their availability just in time.
+
+## Implementation status
+
+Implemented as procedural skill guidance, reference policy, objective template, and static golden intake records. Runtime behavior depends on the compatible skill host and has not been exercised through GitHub Copilot CLI in this environment.
 
 ## References
 
-See `references/` for planned architecture, clarification, capability, specification, and routing contracts.
+- `references/clarification-policy.md`
+- `references/architecture-rules.md`
+- `references/capability-registry.md`
+- `references/specification-contract.md`
+- `references/build-routing.md`
