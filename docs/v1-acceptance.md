@@ -1,6 +1,6 @@
 # M365 Agent Factory V1 acceptance status
 
-**Status: BLOCKED — local control-plane implementation is present and a single Standard Copilot Studio Development pilot was created, but knowledge-grounded execution and evaluation evidence are incomplete.**
+**Status: BLOCKED — local control-plane implementation is present and a single Standard Copilot Studio Development pilot was created, but knowledge-grounded execution and evaluation evidence are incomplete. The supplied harmless fixture is prepared locally but is not attached to the live agent.**
 
 The authoritative specification was not changed. Its approved SHA-256 remains `16daf4b5bfa74117f3ef7842c0ae26eb6c2c7e7faab1d9afa88147cdb86dbe30`. The release traceability map contains all 38 mandatory requirements; its checks validate row structure and evidence references, while each row's status distinguishes local tests from live platform evidence.
 
@@ -23,12 +23,15 @@ The authoritative specification was not changed. Its approved SHA-256 remains `1
 | Safety inspection | **PASS** | PAC's emitted YAML settings were changed to `webBrowsing: false`, `GenerativeActionsEnabled: false`, `useModelKnowledge: false`, and `isFileAnalysisEnabled: false`. Instructions prohibit external actions and unsupported claims. Package inspection found no flow, connector, MCP, custom API, or other external action component. The only knowledge behavior is the standard `SearchAndSummarizeContent` topic; no source is configured. |
 | Live authoring | **PASS** | PAC packed the inspected workspace and `pac solution import` imported the single unmanaged solution `AgentFactoryV1Pilot` into the selected Developer environment. No other environment was targeted. |
 | Remote validation/status | **PASS, with CLI limitation** | `pac copilot list` shows `AgentFactory V1 Pilot`, component state `Published`, status `Provisioned`. `pac copilot clone` succeeded into `/private/tmp/agentfactory-v1-pilot-remote`. The cloned authored YAML matches the source after line-ending normalization. `pac copilot status` failed with a PAC/platform schema error: missing `bot.componentstate_Property`; the successful list and clone are the status/configuration evidence. No Teams/M365 channel publication command was run. |
-| Functional execution | **BLOCKED** | No supported PAC conversational test-chat command is present. The artifact has no approved test knowledge source, and PAC offers no supported knowledge-source configuration command for this workspace. No known-answer, unknown-answer, or external-action conversation was run. |
+| Knowledge fixture | **PREPARED LOCALLY — NOT CONFIGURED** | User-provided harmless fixture is saved at `/private/tmp/agentfactory-v1-pilot/knowledge/AgentFactory V1 Pilot Knowledge.txt`; not attached to the live agent. |
+| Functional execution | **BLOCKED** | No supported PAC conversational test-chat or knowledge-source configuration command is present. The documented Studio UI was unavailable because its browser profile is already in use. No known-answer, unknown-answer, or external-action conversation was run. |
 | Evaluation | **BLOCKED** | PAC 2.13.1 exposes Preview maker-evaluation list/get/run commands. Listing test sets for this exact agent returned `No results returned`; the installed commands do not provide test-set creation. No evaluation was run and no thresholds were invented. |
 | Traceability | **PASS — structural map** | Release-mode traceability validation covers all 38 mandatory REQs and records live Development evidence where it exists. The map does not claim that blocked functional/evaluation gates passed. |
 | Packaging | **PASS** | PAC packed the local workspace, then exported the imported Development solution. Microsoft's PAC Solution Checker completed on both packages with zero Critical, High, Medium, Low, or Informational findings. No Test or Production import occurred. |
 
-Functional conversations have **not been performed** because the available execution host exposes no supported test-chat path and the pilot has no configured knowledge source.
+The user supplied a harmless knowledge fixture containing support hours (8:00 AM to 5:00 PM Eastern Time), escalation code `AF-V1-RED`, pilot owner (AgentFactory validation team), and the explicit prohibition on ticket creation, messaging, approvals, record changes, and all external actions. It has been retained at `/private/tmp/agentfactory-v1-pilot/knowledge/AgentFactory V1 Pilot Knowledge.txt`. This local file is **not configured as a knowledge source** in Copilot Studio.
+
+Microsoft's documented file-knowledge path uses the Copilot Studio authoring UI. The installed PAC 2.13.1 command surface provides no knowledge-file authoring command. The available Chrome DevTools browser connector could not attach or open a page because its browser profile is already in use. Therefore no knowledge source was added, and functional conversations have **not been performed**. The fixture content itself does not resolve the live configuration or conversational execution blockers.
 
 ### Resilience review
 
@@ -58,7 +61,7 @@ Keep the disposable agent and solution while the functional/evaluation evidence 
 | 14C Safe local agent scaffold | **PASS** | Generated settings were hardened and the package inspected before import. |
 | 14D Live agent creation | **PASS** | One agent created by importing the inspected PAC package. |
 | 14E Remote validation/status | **PASS** | Remote listing, `Provisioned` status, and clone succeeded; dedicated `status` command has the documented schema error. |
-| 14F Functional execution | **BLOCKED** | No configured knowledge source or supported local conversational test interface. |
+| 14F Functional execution | **BLOCKED** | User-provided fixture is prepared locally but not attached; PAC has no supported knowledge-source configuration or conversational test command, and the Studio browser profile is unavailable. |
 | 14G Evaluation | **BLOCKED** | No maker-evaluation test set exists for the agent and PAC has no test-set creation command. |
 | 14H Traceability | **PASS** | All 38 mandatory rows pass release-mode structural traceability validation; unverified gates remain marked blocked. |
 | 14I Packaging | **PASS** | Development solution exported and Solution Checker returned zero findings. |
