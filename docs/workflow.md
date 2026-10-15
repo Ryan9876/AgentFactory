@@ -17,7 +17,26 @@ OBJECTIVE_CAPTURED
 → COMPLETE
 ```
 
-`BLOCKED` can be entered when required information, permission, capability, or environment is unavailable. A changed approved specification enters `SPEC_CHANGED` and blocks build/resume/final verification until reapproval. Persist the current state and artifact pointers in `.agent-factory/state.json` so interrupted work can resume.
+The exact V1 state values are:
+
+```text
+OBJECTIVE_CAPTURED
+CLARIFICATION_REQUIRED
+ARCHITECTING
+SPEC_DRAFTED
+AWAITING_APPROVAL
+APPROVED
+PREFLIGHT
+BUILDING
+VERIFYING
+ITERATING
+READY_TO_PACKAGE
+BLOCKED
+COMPLETE
+SPEC_CHANGED
+```
+
+`BLOCKED` is entered when required information, permission, capability, or environment is unavailable. A changed approved specification enters `SPEC_CHANGED` and blocks build/resume/final verification until reapproval. Persist the current state and artifact pointers in `.agent-factory/state.json` so interrupted work can resume.
 
 ## Stage contract
 

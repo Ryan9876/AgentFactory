@@ -13,7 +13,7 @@ Implementation is in progress. Check each skill's status before use. The local b
 
 ## Intended skill layout
 
-The three custom packages are under `.github/skills/<skill-name>/`, each with a `SKILL.md` and focused references. GitHub's current [Copilot CLI skill guide](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills) documents `.github/skills/` as a project-skill location and describes `/skills reload` and `/skills info`. The local `copilot` executable was unavailable during baseline inspection, so discovery/loading has not been exercised in this environment.
+The three custom packages are under `.github/skills/<skill-name>/`, each with a `SKILL.md` and focused references. GitHub's current [Copilot CLI skill guide](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills) documents `.github/skills/` as a project-skill location and describes `/skills reload` and `/skills info`. The local `copilot` executable was unavailable during baseline inspection, so discovery/loading has not been exercised in this environment. Do not treat static repository tests as host compatibility evidence.
 
 Install or invoke Microsoft-provided capabilities using their verified, supported installation path. This repository intentionally does not prescribe unverified commands for Copilot Studio, Power Automate, Dataverse, PAC CLI, or evaluation tooling.
 
@@ -37,6 +37,8 @@ Observed 2026-10-14. These results are environment-specific and should be refres
 | PAC CLI | Installed; live operations not verified | PAC CLI 2.13.1 (`microsoft.powerapps.cli.tool`) was installed. `pac help` lists `auth`, `env`, `solution`, and preview `copilot-studio` command groups; `pac solution` lists init/list/import/export/pack/unpack/check and related operations. A saved PAC auth profile was listed, but no target-environment operation was attempted. See [PAC command groups](https://learn.microsoft.com/power-platform/developer/cli/reference/) and [solution commands](https://learn.microsoft.com/power-platform/developer/cli/reference/solution). |
 | Azure CLI / Power Automate identity | Available through FlowAgent; no target selected | FlowAgent doctor reported Azure CLI sign-in, token acquisition, and identity matching as passing. It reported no current Power Automate environment. No tenant or environment identifiers are stored in this repository. |
 
+The Task 14 read-only recheck on 2026-10-14 again found FlowAgent authentication and environment-list access available, with seven environments visible and no current environment selected. The catalog included a Sandbox named as a Development environment and a separate personal Developer environment. No environment was selected: this inventory alone did not establish Copilot Studio licensing, authoring permissions, DLP/admin suitability, or evaluation compatibility for either target. No agent or other pilot artifact was created.
+
 The PAC CLI `--version` and `version` forms are not valid commands in the installed 2.13.1 build; `pac help` prints the version. No custom wrapper or dependency was added. A local `az version` attempt was blocked while Azure CLI tried to write its profile diagnostic log, despite FlowAgent's successful read-only auth checks; this did not establish an Azure CLI auth failure.
 
 ## Deterministic helper usage
@@ -56,3 +58,5 @@ python3 scripts/traceability_check.py --spec PATH --traceability PATH [--release
 ```
 
 The checker reads `REQ-NNN` definitions from requirement bullets or requirement table rows. It enforces the approved eight-column CSV header, rejects unknown/duplicate mappings, and requires implementation artifact/evidence for each mandatory requirement. `--release` also requires verification ID/evidence. It uses only Python's standard library; a nonzero exit means the input or coverage needs correction.
+
+The local verification and remediation helpers can be invoked from the repository root with `python3 -m scripts.agent_spec_verifier --project-root <agent-project-root> --evidence-file <evidence-json>`. This consumes recorded external evidence; it does not execute Copilot Studio, Power Automate, Dataverse, or Microsoft evaluation checks. Remediation routing is exposed as `scripts.remediation.route_finding` and does not apply fixes.
