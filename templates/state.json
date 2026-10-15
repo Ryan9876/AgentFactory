@@ -5,6 +5,10 @@
   "target_environment": null,
   "approved_spec_sha256": null,
   "manifest_path": "build-manifest.md",
+  "manifest_progress": {
+    "completed_task_ids": [],
+    "next_task_id": null
+  },
   "traceability_path": "traceability.csv",
   "blockers": [],
   "updated_at": null
