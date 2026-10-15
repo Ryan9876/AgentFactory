@@ -48,3 +48,11 @@ python3 scripts/spec_hash.py [--project-root PATH] [--approved-hash SHA256]
 ```
 
 The root defaults to the current directory and the helper reads `.agent-factory/spec.md` as bytes. Success prints only the lowercase digest. When `--approved-hash` is supplied, a mismatch prints `SPEC_CHANGED` and exits nonzero. A missing or unreadable spec produces a diagnostic on stderr. These commands operate on local files and do not access Microsoft services.
+
+Validate implementation coverage with:
+
+```sh
+python3 scripts/traceability_check.py --spec PATH --traceability PATH [--release]
+```
+
+The checker reads `REQ-NNN` definitions from requirement bullets or requirement table rows. It enforces the approved eight-column CSV header, rejects unknown/duplicate mappings, and requires implementation artifact/evidence for each mandatory requirement. `--release` also requires verification ID/evidence. It uses only Python's standard library; a nonzero exit means the input or coverage needs correction.
