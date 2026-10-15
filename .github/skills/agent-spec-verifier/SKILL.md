@@ -36,6 +36,8 @@ This is a verification/control-plane skill. It does not author or execute Copilo
 5. For each finding, identify the smallest owning component and route remediation to its Microsoft capability. Retest the affected component and rerun required release tests.
 6. Populate `templates/acceptance-report.md` with evidence references, limitations, manual steps, remaining approvals, and the returned verdict.
 
+Use `references/remediation-routing.md` and `scripts.remediation.route_finding` for deterministic ownership and retest routing. Unrouteable findings stay `BLOCK`; proposed requirement changes require explicit reapproval.
+
 ## Dependencies
 
 Approved project artifacts; deterministic specification integrity and traceability helpers; platform and evaluation evidence from the currently available registered Microsoft capabilities; resilience review guidance.
@@ -49,4 +51,6 @@ Implemented as verifier policy and a deterministic local gate module. It consume
 - `references/verification-protocol.md`
 - `references/traceability-rules.md`
 - `references/verdict-rules.md`
+- `references/remediation-routing.md`
 - `../../../scripts/agent_spec_verifier.py`
+- `../../../scripts/remediation.py`
