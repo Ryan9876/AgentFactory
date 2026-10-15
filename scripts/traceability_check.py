@@ -154,17 +154,23 @@ def read_traceability(traceability_path, requirements, release, errors):
 
 def main(argv=None):
     args = parse_args(argv)
-    errors = []
-    requirements = read_requirements(args.spec, errors)
-    read_traceability(args.traceability, requirements, args.release, errors)
+    errors = validate_traceability(args.spec, args.traceability, args.release)
     if errors:
         for error in errors:
             print(f"traceability_check: {error}", file=sys.stderr)
         return 1
 
+    requirements = read_requirements(args.spec, [])
     mandatory_count = sum(requirements.values())
     print(f"Traceability check passed ({mandatory_count} mandatory requirements covered).")
     return 0
+
+
+def validate_traceability(spec_path, traceability_path, release=False):
+    errors = []
+    requirements = read_requirements(Path(spec_path), errors)
+    read_traceability(Path(traceability_path), requirements, release, errors)
+    return errors
 
 
 if __name__ == "__main__":
