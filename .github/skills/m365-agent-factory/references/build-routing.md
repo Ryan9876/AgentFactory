@@ -7,12 +7,15 @@
 3. Load/check only capabilities required by the approved architecture, using current registry evidence and the target environment's prerequisites.
 4. Generate dependency-ordered manifest tasks mapped to stable capability intents and only relevant requirement IDs.
 
+Use the deterministic API in `../../../../scripts/build_state.py` for approval digest storage, integrity gates, manifest dependency ordering, task evidence transitions, state serialization, and resume selection. If the runtime cannot invoke the helper, record that dependency as blocked; do not approximate the digest or transition rules.
+
 ## Route each manifest task
 
 - Select the smallest capability that owns the platform operation; Microsoft capabilities own authoring, flow/data work, evaluation, validation, and ALM.
 - Pass only the task's input/output, relevant requirement IDs, approved context, dependencies, and existing artifact evidence. Do not pass unrelated project context.
 - Resolve the stable ID through `capability-registry.json` and current provider evidence. Keep provider/tool details out of requirement IDs and architecture intent.
 - Record provider selection, evidence status, prerequisites, output artifact, implementation evidence, and status in the manifest and traceability record.
+- Mark implementation `COMPLETE` only with inspectable artifact and implementation evidence; mark it `VERIFIED` only after verification evidence is recorded.
 - If an unknown capability intent is requested, or a required provider is unavailable, mark only the dependent task `BLOCKED`, record the concrete reason and owner, and continue independent tasks where safe. Do not silently fall back or fabricate a provider. Revisit architecture only through an explicit documented decision.
 
 ## Capability intent route matrix
@@ -25,4 +28,4 @@ Standard Copilot Studio is the default. A GHCP-style harness is routed only when
 
 ## Resume
 
-Recheck spec integrity, read persisted state and manifest, inspect existing platform artifacts, and verify evidence for completed work. Reuse only completed work with inspectable verification evidence. Resume at the first incomplete dependency-ready task; do not repeat a side effect when its prior outcome is uncertain.
+Recheck spec integrity, read persisted state and manifest, inspect existing platform artifacts, and verify evidence for completed work. Reuse only completed work with inspectable verification evidence. An inspected incomplete task becomes ready to restart; an uninspected artifact or uncertain prior side effect is blocked. Resume at the first incomplete dependency-ready task and continue independent safe work; do not repeat a side effect when its prior outcome is uncertain.

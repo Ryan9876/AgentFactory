@@ -32,11 +32,16 @@ def parse_args(argv=None):
     return parser.parse_args(argv)
 
 
+def calculate_spec_hash(spec_path):
+    """Return the SHA-256 digest of the exact bytes in a specification file."""
+    return hashlib.sha256(Path(spec_path).read_bytes()).hexdigest()
+
+
 def main(argv=None):
     args = parse_args(argv)
     spec_path = args.project_root / ".agent-factory" / "spec.md"
     try:
-        contents = spec_path.read_bytes()
+        digest = calculate_spec_hash(spec_path)
     except OSError:
         print(
             "spec_hash: cannot read required file .agent-factory/spec.md",
@@ -44,7 +49,6 @@ def main(argv=None):
         )
         return 1
 
-    digest = hashlib.sha256(contents).hexdigest()
     if args.approved_hash is not None and digest != args.approved_hash:
         print("SPEC_CHANGED")
         return 2

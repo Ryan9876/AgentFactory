@@ -3,6 +3,7 @@
 - Decision ID:
 - Status: `DRAFT` | `CLARIFICATION_REQUIRED` | `DECIDED_WITH_UNRESOLVED_DEPENDENCIES` | `DECIDED`
 - Objective record:
+- Accepted by user: `yes` | `no` (record decision date/evidence below)
 - Specification status: not drafted until architecture is decided
 - User acceptance / date:
 

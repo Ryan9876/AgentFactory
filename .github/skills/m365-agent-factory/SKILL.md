@@ -24,6 +24,16 @@ This is a procedural orchestration skill, not an agent runtime, platform SDK, or
 7. Do not draft architecture while a consequential unknown blocks a sound architecture decision. Do not draft the implementation specification before architecture is recorded. If a second clarification round is needed, limit it to genuinely blocking unknowns revealed by the first answers.
 8. Persist answers and update the intake disposition. Proceed to architecture only when no blocking consequential unknown remains or the user explicitly accepts a documented assumption.
 
+## Build orchestration and resume
+
+1. Do not preflight or build until architecture and specification are approved. Record approval only after an explicit user decision; the approved specification digest is computed from the exact `.agent-factory/spec.md` bytes.
+2. Use repository helper `../../../scripts/build_state.py` to store the digest, enforce V1 state transitions, verify integrity, dependency-order manifest tasks, and persist state. Do not implement these gates informally in prose.
+3. Before initial build, resume, and final verification, verify the stored hash. On mismatch, persist `SPEC_CHANGED`, block affected work, and require an updated specification plus explicit reapproval and a new digest.
+4. Generate manifest tasks only from an approved specification and accepted architecture. Map every requirement to a registered capability intent; record dependencies, selected provider, output artifact, status, and evidence.
+5. A task is `COMPLETE` only with implementation evidence and `VERIFIED` only with verification evidence. Do not mark or reuse work as verified based solely on a prior status.
+6. On resume, inspect existing platform artifacts and record inspection evidence. Reuse a completed task only when its artifact and verification evidence remain valid. Restart an inspected incomplete task; block a task whose artifact was not inspected or whose prior side-effect outcome is unknown. Continue independent dependency-ready work when safe.
+7. Persist state and manifest progress after each transition. Never include credentials, secret values, or authentication material in project state, manifest evidence, fixtures, or logs.
+
 ## Inputs
 
 - Ordinary-language business objective.
@@ -54,3 +64,4 @@ Implemented as procedural skill guidance, reference policy, objective template, 
 - `references/capability-registry.md`
 - `references/specification-contract.md`
 - `references/build-routing.md`
+- `../../../scripts/build_state.py` (state and manifest contract)

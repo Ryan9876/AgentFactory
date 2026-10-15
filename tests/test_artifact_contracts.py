@@ -69,9 +69,12 @@ class ArtifactContractTests(unittest.TestCase):
                 "dependencies",
                 "requirement ids",
                 "owning capability",
+                "provider",
                 "output artifact",
                 "status",
                 "implementation evidence",
+                "verification evidence",
+                "artifact inspection evidence",
             ],
         )
         manifest = (TEMPLATES / "build-manifest.md").read_text()
