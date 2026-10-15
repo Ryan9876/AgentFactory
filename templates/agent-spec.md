@@ -37,6 +37,6 @@ Status: DRAFT | AWAITING_APPROVAL | APPROVED
 ## Known dependencies
 ## Unresolved blockers
 ## Approval record
-Approver: TBD  
-Approved at: TBD  
+Approver: TBD
+Approved at: TBD
 Approved spec SHA-256: TBD
