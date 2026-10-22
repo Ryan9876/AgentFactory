@@ -17,9 +17,20 @@ This is a procedural orchestration skill, not an agent runtime, platform SDK, or
 
 Before architecture selection, before any cloud mutation, and before final qualification, read `references/engineering-guardrails.md` and apply every rule relevant to the selected architecture and tool surface.
 
-The guardrails are evidence from prior Microsoft 365 agent delivery, not a mandate to reproduce Work Radar's architecture. Apply universal architecture, diagnosis, evidence, security, restoration, path-of-least-resistance, and user-presence rules broadly. Apply PAC, Copilot Studio, browser, semantic, persistence, reconciliation, and diagnostic rules only when those concerns exist in the approved design.
+The guardrails are evidence from prior Microsoft 365 agent delivery, not a mandate to reproduce Work Radar's architecture. Apply universal architecture, diagnosis, autonomy, evidence, security, restoration, path-of-least-resistance, and user-presence rules broadly. Apply PAC, Copilot Studio, browser, semantic, persistence, reconciliation, and diagnostic rules only when those concerns exist in the approved design.
 
 If new evidence invalidates the current implementation path, stop the affected work, record the evidence, reassess the supported native alternatives, and change path rather than continuing a disproven approach.
+
+## Autonomy-first execution
+
+Codex owns execution by default. The user is the final fallback, not the normal execution surface.
+
+1. If an approved step can be performed safely through repository/file operations, shell/CLI, PAC, MCP, SDK/API, browser automation, supported portal automation, or another available supported surface, perform it directly.
+2. Choose the least-effort supported path first. If it fails, localize the failure and try the next-best supported path rather than immediately handing the work to the user.
+3. Exhaust reasonable supported automation alternatives before declaring `USER_PRESENCE_REQUIRED`.
+4. Do not bypass MFA, consent, administrator authority, tenant governance, security controls, destructive-action confirmation, Production approval, or organization-wide publication approval in the name of autonomy.
+5. At a genuine user/admin boundary, continue independent work where safe and hand off only the smallest irreducibly human step.
+6. Every user instruction must appear in one fenced copy/paste block containing only the exact command(s) or UI action(s) to perform. Do not duplicate actionable instructions outside that block.
 
 ## Intake procedure
 
