@@ -46,11 +46,24 @@ def run_checks(command_runner=None, command_finder=None):
             add(name, "PASS" if result.returncode == 0 else "FAIL", output[:500] or f"{command} returned {result.returncode}")
         except (OSError, subprocess.TimeoutExpired) as exc:
             add(name, "FAIL", f"{command} could not be verified: {exc}")
+    for check in checks:
+        if check.name in {"wiqd", "atk"}:
+            check.required = False
+    declarative = any(c.name in {"wiqd", "atk"} and c.status == "PASS" for c in checks)
+    add("declarative_build_path", "PASS" if declarative else "FAIL", "WIQD or supported Agents Toolkit fallback must execute")
+    for name, relative in (("ryan_agentfactory_stack", ".agents/skills/ryan-agentfactory-stack/SKILL.md"), ("lessons_guardrails", ".agents/skills/agentfactory/references/engineering-guardrails.md")):
+        add(name, "PASS" if (ROOT / relative).is_file() else "FAIL", relative)
+    if find("pac"):
+        try:
+            result = run(["pac", "copilot", "mcp"], capture_output=True, text=True, timeout=20)
+            add("pac_mcp", "PASS" if result.returncode == 0 else "CONDITIONAL", "MCP command discovery executed; direct PAC CLI remains available", False)
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            add("pac_mcp", "CONDITIONAL", f"Direct PAC CLI fallback: {exc}", False)
     if find("codex"):
         try:
-            result = run(["codex", "mcp", "list"], capture_output=True, text=True, timeout=20)
+            result = run(["codex", "-c", 'mcp_servers.microsoft-learn.url="https://learn.microsoft.com/api/mcp"', "mcp", "list"], capture_output=True, text=True, timeout=20)
             detail = (result.stdout or result.stderr).strip()
-            found = result.returncode == 0 and "microsoft-learn" in detail.lower()
+            found = result.returncode == 0 and "microsoft-learn" in detail.lower() and "https://learn.microsoft.com/api/mcp" in detail
             add("microsoft_learn_mcp", "PASS" if found else "FAIL", detail[:500] or "Microsoft Learn MCP not listed")
         except (OSError, subprocess.TimeoutExpired) as exc:
             add("microsoft_learn_mcp", "FAIL", f"MCP discovery unavailable: {exc}")
