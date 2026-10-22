@@ -13,8 +13,8 @@ This is repository acceptance evidence, not tenant or cloud qualification. Statu
 | Tooling bootstrap uses current documented Microsoft routes and separates authentication | `scripts/bootstrap_codex_cloud.sh`, `tests/test_bootstrap_contract.py`, Microsoft docs linked in installation guide | PASS (static contract; installer not executed) |
 | First-build procedure preserves disposable Development scope, fixtures, evidence, and publication gate | `docs/first-build.md` | PASS (procedure defined; no agent created) |
 | Preserved V1 release evidence and traceability | `docs/v1-acceptance.md`, release-mode traceability check (38 mandatory rows) | PASS |
-| Repository tests, compile, shell syntax, whitespace | 99 tests; compileall; `bash -n`; `git diff --check` on accepted tree | PASS |
-| Codex host has WIQD, Microsoft Learn MCP, and live Microsoft authentication/Development target | Local readiness output | NOT VERIFIED / BLOCKED: WIQD missing; auth and target not established |
+| Repository tests, compile, shell syntax, whitespace | 101 tests; compileall; `bash -n`; `git diff --check` on accepted tree | PASS |
+| Codex host has WIQD, Microsoft Learn MCP, and live Microsoft authentication/Development target | Local readiness output | Microsoft Learn MCP PASS; WIQD FAIL (not installed); authentication and Development target BLOCKED / NOT VERIFIED |
 | Platform runtime qualification of the new declarative path | No target agent built; intentionally deferred until repository/readiness acceptance and approved project spec | NOT VERIFIED |
 
 ## Workflow provenance

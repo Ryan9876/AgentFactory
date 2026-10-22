@@ -1,4 +1,27 @@
 schema_version: 2
+capabilities:
+  - copilot_studio.standard.author
+  - copilot_studio.standard.manage
+  - copilot_studio.standard.test
+  - power_automate.connector.discover
+  - power_automate.flow.build
+  - power_automate.flow.edit
+  - power_automate.flow.validate
+  - power_automate.flow.preflight
+  - power_automate.flow.execute
+  - power_automate.flow.diagnose
+  - dataverse.metadata
+  - dataverse.data
+  - dataverse.security
+  - dataverse.admin
+  - dataverse.solution
+  - agent.evaluate
+  - power_platform.solution.alm
+  - declarative_agent.create
+  - declarative_agent.validate
+  - declarative_agent.provision
+  - declarative_agent.package
+  - power_platform.pac_mcp
 providers:
   microsoft_learn:
     microsoft_support_status: documented
@@ -119,6 +142,91 @@ providers:
     evidence: ["Historical V1 pilot report; not evidence for current host/target"]
     limitations: ["V2 selects this only when approved requirements justify it"]
     fallback: declarative_agent_if_requirements_allow
+  power_automate:
+    microsoft_support_status: documented
+    preview_status: operation_dependent
+    organization_policy_status: allowed_when_justified
+    licensing_status: tenant_dependent
+    codex_cloud_tool_status: host_tool_discovery_historical_only
+    authentication_status: not_yet_verified
+    tenant_execution_status: not_yet_verified
+    cloud_synchronization_status: not_tested
+    runtime_qualification_status: not_tested
+    user_presence_required: not_yet_verified
+    admin_required: not_yet_verified
+    tool_host_block: false
+    last_verified_at: null
+    evidence: ["https://learn.microsoft.com/power-automate/"]
+    limitations: ["Do not infer connector operation, environment, auth, or policy from general docs"]
+    fallback: smallest_supported_native_action_or_block
+  dataverse:
+    microsoft_support_status: documented
+    preview_status: operation_dependent
+    organization_policy_status: allowed_when_justified
+    licensing_status: tenant_dependent
+    codex_cloud_tool_status: not_yet_verified
+    authentication_status: not_yet_verified
+    tenant_execution_status: not_yet_verified
+    cloud_synchronization_status: not_tested
+    runtime_qualification_status: not_tested
+    user_presence_required: not_yet_verified
+    admin_required: not_yet_verified
+    tool_host_block: false
+    last_verified_at: null
+    evidence: ["https://learn.microsoft.com/power-apps/maker/data-platform/data-platform-intro"]
+    limitations: ["Add only for structured persistent data needs not met by an authoritative existing system"]
+    fallback: existing_authoritative_state_owner_or_block
+  agent_evaluation:
+    microsoft_support_status: documented
+    preview_status: tool_dependent
+    organization_policy_status: allowed
+    licensing_status: tenant_dependent
+    codex_cloud_tool_status: not_yet_verified
+    authentication_status: not_yet_verified
+    tenant_execution_status: not_yet_verified
+    cloud_synchronization_status: not_applicable
+    runtime_qualification_status: not_tested
+    user_presence_required: not_yet_verified
+    admin_required: not_yet_verified
+    tool_host_block: false
+    last_verified_at: null
+    evidence: ["https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/evaluation-overview"]
+    limitations: ["Evaluation route depends on selected agent type; thresholds are project-approved only"]
+    fallback: approved_manual_fixture_execution_with_evidence
+  pac_mcp:
+    microsoft_support_status: documented
+    preview_status: not_yet_verified
+    organization_policy_status: allowed_when_useful
+    licensing_status: platform_dependent
+    codex_cloud_tool_status: not_yet_verified
+    authentication_status: not_yet_verified
+    tenant_execution_status: not_yet_verified
+    cloud_synchronization_status: not_tested
+    runtime_qualification_status: not_applicable
+    user_presence_required: false
+    admin_required: false
+    tool_host_block: false
+    last_verified_at: null
+    evidence: ["https://learn.microsoft.com/en-us/power-platform/developer/howto/use-mcp"]
+    limitations: ["MCP discovery is not authentication evidence; direct PAC CLI is a documented alternative"]
+    fallback: direct_pac_cli_after_current_help_discovery
+  custom_engine:
+    microsoft_support_status: documented
+    preview_status: not_yet_verified
+    organization_policy_status: exception_only
+    licensing_status: project_dependent
+    codex_cloud_tool_status: not_yet_verified
+    authentication_status: not_yet_verified
+    tenant_execution_status: not_yet_verified
+    cloud_synchronization_status: not_tested
+    runtime_qualification_status: not_tested
+    user_presence_required: not_yet_verified
+    admin_required: not_yet_verified
+    tool_host_block: false
+    last_verified_at: null
+    evidence: ["https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/overview-custom-engine-agent"]
+    limitations: ["Exception-only; use only after simpler supported agent routes are demonstrably insufficient"]
+    fallback: declarative_or_standard_supported_agent_route
   github_copilot_harness:
     microsoft_support_status: documented
     preview_status: not_yet_verified

@@ -14,6 +14,7 @@ class CapabilityRegistryTests(unittest.TestCase):
     def test_registry_has_independent_evidence_dimensions_and_safe_unknowns(self):
         data = load_yaml(REGISTRY)
         self.assertEqual(data["schema_version"], 2)
+        self.assertTrue({"wiqd", "agents_toolkit", "pac", "pac_mcp", "power_automate", "dataverse", "agent_evaluation", "workiq_retrieve", "host_composed_workiq", "custom_engine", "github_copilot_harness"}.issubset(data["providers"]))
         for name, provider in data["providers"].items():
             with self.subTest(provider=name):
                 self.assertTrue(FIELDS.issubset(provider))
@@ -27,7 +28,9 @@ class CapabilityRegistryTests(unittest.TestCase):
         approved = set(re.findall(r"\bREQ-\d{3}\b", SPEC.read_text()))
         with ROUTES.open(newline="") as stream: rows = list(csv.DictReader(stream))
         self.assertGreaterEqual(len(rows), 10)
+        known = set(load_yaml(REGISTRY)["capabilities"])
         for row in rows:
+            self.assertIn(row["capability_id"], known)
             self.assertRegex(row["requirement_ids"], r"^REQ-\d{3}(;REQ-\d{3})*$")
             self.assertTrue(set(row["requirement_ids"].split(";")).issubset(approved))
             self.assertTrue(row["focused_context"].strip())

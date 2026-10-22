@@ -16,15 +16,16 @@ class CheckResult:
     detail: str
     required: bool
 
-def run_checks(command_runner=None):
+def run_checks(command_runner=None, command_finder=None):
     run = command_runner or subprocess.run
+    find = command_finder or shutil.which
     checks = []
     def add(name, status, detail, required=True):
         checks.append(CheckResult(name, status, detail, required))
     add("canonical_skills", "PASS" if (ROOT/".agents/skills/agentfactory/SKILL.md").is_file() else "FAIL", "Canonical repo skill layout")
     add("pyyaml", "PASS" if importlib.util.find_spec("yaml") else "FAIL", "PyYAML import availability")
     for name, cmd in (("node", ["node", "--version"]),("dotnet", ["dotnet", "--version"])):
-        if not shutil.which(cmd[0]):
+        if not find(cmd[0]):
             add(name, "FAIL", f"{cmd[0]} not installed")
             continue
         try:
@@ -36,7 +37,7 @@ def run_checks(command_runner=None):
         except (OSError, ValueError, subprocess.TimeoutExpired) as exc:
             add(name, "FAIL", str(exc))
     for name, command in (("wiqd", ["wiqd", "--help"]), ("atk", ["atk", "-h"]), ("pac", ["pac", "help"])):
-        if not shutil.which(name):
+        if not find(name):
             add(name, "FAIL", f"{name} not installed")
             continue
         try:
@@ -45,7 +46,7 @@ def run_checks(command_runner=None):
             add(name, "PASS" if result.returncode == 0 else "FAIL", output[:500] or f"{command} returned {result.returncode}")
         except (OSError, subprocess.TimeoutExpired) as exc:
             add(name, "FAIL", f"{command} could not be verified: {exc}")
-    if shutil.which("codex"):
+    if find("codex"):
         try:
             result = run(["codex", "mcp", "list"], capture_output=True, text=True, timeout=20)
             detail = (result.stdout or result.stderr).strip()
