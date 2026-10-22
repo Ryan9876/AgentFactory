@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RULES = ROOT / ".github/skills/m365-agent-factory/references/architecture-rules.md"
+RULES = ROOT / ".agents/skills/agentfactory/references/architecture-rules.md"
 TEMPLATE = ROOT / "templates/architecture-decision.md"
 FIXTURES = ROOT / "tests/fixtures/architecture"
 DECISIONS = (
@@ -44,7 +44,7 @@ class ArchitectureContractTests(unittest.TestCase):
         self.assertNotIn("planned, not implemented", rules.lower())
         for phrase in (
             "standard copilot studio",
-            "material architectural advantage",
+            "least-complex viable supported architecture",
             "knowledge",
             "power automate",
             "dataverse",
@@ -60,6 +60,13 @@ class ArchitectureContractTests(unittest.TestCase):
             self.assertIn(DECISION_LABELS[name], template.lower())
         for phrase in ("rationale", "evidence status", "dependency", "alternatives", "assumptions", "unresolved blockers"):
             self.assertIn(phrase, template.lower())
+        for phrase in ("buildability", "simplest viable path", "native capability considered", "runtime qualification plan", "rollback/restoration plan", "stop/reassessment conditions"):
+            self.assertIn(phrase, template.lower())
+
+    def test_authoring_or_tool_host_failure_alone_cannot_raise_complexity(self):
+        rules = RULES.read_text().lower()
+        self.assertIn("failure alone never authorizes a more complex architecture", rules)
+        self.assertIn("localize the failing layer", rules)
 
     def test_golden_architectures_have_complete_explained_decisions(self):
         for name in (
@@ -77,9 +84,10 @@ class ArchitectureContractTests(unittest.TestCase):
                     self.assertTrue(decision["rationale"].strip())
                     self.assertIn(decision["evidence_status"], EVIDENCE_STATES)
 
-    def test_knowledge_only_uses_minimal_standard_architecture(self):
+    def test_knowledge_only_uses_minimal_declarative_architecture(self):
         decisions = load_case("knowledge-only.json")["decisions"]
-        self.assertEqual(decisions["harness"]["selection"], "Standard Copilot Studio")
+        self.assertEqual(decisions["harness"]["selection"], "Declarative agent")
+        self.assertEqual(decisions["harness"]["authoring_tool"], "WIQD; Agents Toolkit fallback")
         self.assertIn("SharePoint", decisions["knowledge"]["selection"])
         self.assertEqual(decisions["power_automate"]["selection"], "Not required")
         self.assertEqual(decisions["dataverse_state"]["selection"], "Not required")

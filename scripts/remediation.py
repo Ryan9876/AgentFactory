@@ -92,7 +92,7 @@ def route_finding(finding, manifest_tasks, spec_path, registry_path=None):
         return _blocked("finding references requirements absent from the approved specification: {}".format(", ".join(unknown)))
 
     capabilities = _known_capabilities(
-        registry_path or REPOSITORY_ROOT / ".github/skills/m365-agent-factory/references/capability-routes.csv"
+        registry_path or REPOSITORY_ROOT / ".agents/skills/agentfactory/references/capability-routes.csv"
     )
     matches = []
     requested_component = finding.get("component")

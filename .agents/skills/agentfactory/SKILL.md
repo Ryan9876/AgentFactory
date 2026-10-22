@@ -1,36 +1,35 @@
 ---
-name: m365-agent-factory
+name: agentfactory
 description: Turn a business objective into a clarified, approved, and verifiable plan for a Microsoft 365 Copilot agent.
 ---
 
-# M365 Agent Factory
+# AgentFactory
 
 ## Purpose
 
 Guide the control-plane lifecycle: objective intake, requirement extraction, minimal clarification, architecture selection, specification, explicit approval, and implementation orchestration. Microsoft capabilities own platform authoring, execution, evaluation, and ALM.
 
+For substantial repository engineering, follow `../ryan-agentfactory-stack/SKILL.md`. AgentFactory's original objective and approved requirements govern; derived plans cannot narrow them. Run independent requirements convergence after implementation and distinguish runtime qualification from source tests.
+
 ## Boundaries
 
 This is a procedural orchestration skill, not an agent runtime, platform SDK, or substitute for Copilot Studio, Power Automate, Dataverse, evaluation tools, or PAC CLI. Do not invent tenant or environment facts, connector operations, schemas, credentials, permissions, or URLs. Never begin implementation before the specification is approved. Production deployment and organization-wide publication require explicit approval.
+
+## Autonomy-first execution
+
+AUTOMATE FIRST → TRY THE NEXT SUPPORTED PATH → EXHAUST REASONABLE OPTIONS → HAND OFF ONLY THE IRREDUCIBLY HUMAN STEP. Codex performs safe repository, shell, CLI, PAC, MCP/API/SDK, browser, test, validation, packaging, evidence, and diagnosis work itself when supported. A failed surface requires layer diagnosis and bounded supported fallback attempts, not immediate user handoff. Continue independent work while a dependency is blocked. Never bypass security, authentication, administrator, or approval boundaries. Provide only the exact minimum user action when MFA, mandated interactive consent/terms, admin authority, security policy, or explicit Production/publication approval genuinely requires the user.
+
+## Path-of-least-resistance record
+
+Before substantial architecture or implementation, record user outcome, native capability, simplest viable level (Use → Configure → Integrate → Automate → Extend → Build), demonstrated reason earlier levels fail, Microsoft architecture and implementation surface, security/data impact, buildability, runtime qualification plan, rollback/restoration plan, and stop/reassessment conditions. Tooling inconvenience alone never justifies added complexity.
 
 ## Lessons-learned gate
 
 Before architecture selection, before any cloud mutation, and before final qualification, read `references/engineering-guardrails.md` and apply every rule relevant to the selected architecture and tool surface.
 
-The guardrails are evidence from prior Microsoft 365 agent delivery, not a mandate to reproduce Work Radar's architecture. Apply universal architecture, diagnosis, autonomy, evidence, security, restoration, path-of-least-resistance, and user-presence rules broadly. Apply PAC, Copilot Studio, browser, semantic, persistence, reconciliation, and diagnostic rules only when those concerns exist in the approved design.
+The guardrails are evidence from prior Microsoft 365 agent delivery, not a mandate to reproduce Work Radar's architecture. Apply universal architecture, diagnosis, evidence, security, restoration, path-of-least-resistance, and user-presence rules broadly. Apply PAC, Copilot Studio, browser, semantic, persistence, reconciliation, and diagnostic rules only when those concerns exist in the approved design.
 
 If new evidence invalidates the current implementation path, stop the affected work, record the evidence, reassess the supported native alternatives, and change path rather than continuing a disproven approach.
-
-## Autonomy-first execution
-
-Codex owns execution by default. The user is the final fallback, not the normal execution surface.
-
-1. If an approved step can be performed safely through repository/file operations, shell/CLI, PAC, MCP, SDK/API, browser automation, supported portal automation, or another available supported surface, perform it directly.
-2. Choose the least-effort supported path first. If it fails, localize the failure and try the next-best supported path rather than immediately handing the work to the user.
-3. Exhaust reasonable supported automation alternatives before declaring `USER_PRESENCE_REQUIRED`.
-4. Do not bypass MFA, consent, administrator authority, tenant governance, security controls, destructive-action confirmation, Production approval, or organization-wide publication approval in the name of autonomy.
-5. At a genuine user/admin boundary, continue independent work where safe and hand off only the smallest irreducibly human step.
-6. Every user instruction must appear in one fenced copy/paste block containing only the exact command(s) or UI action(s) to perform. Do not duplicate actionable instructions outside that block.
 
 ## Intake procedure
 

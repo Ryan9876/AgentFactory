@@ -10,6 +10,14 @@
 
 **Spec:** `docs/superpowers/specs/2026-10-21-agentfactory-v2-design.md`
 
+## AgentFactory engineering methodology overlay
+
+The repo-local `.agents/skills/ryan-agentfactory-stack/SKILL.md` governs engineering workflow. Original objective and approved requirements outrank this derived plan; this plan must not reduce scope. Use the AgentFactory intake/specification/approval flow rather than creating duplicate Spec Kit artifacts. Require original-requirements convergence after implementation, separate source validation from target-runtime qualification, and use Superpowers only as a replaceable engineering layer. OJO/Impeccable are conditional on substantial custom UI/UX. Execute safe work autonomously, diagnose failures by layer, try supported surfaces, exhaust reasonable fallbacks, and hand off only irreducibly human steps.
+
+### First-party tooling correction (2026-10-21)
+
+The plan's earlier `npm install @microsoft/wiqd` assumption is superseded by current [Microsoft WIQD installation guidance](https://microsoft.github.io/wiqd/getting-started/installation/), which documents Microsoft's supported installer. Do not confuse WIQD with the separate Work IQ package. Bootstrap uses the supported WIQD installer and skips optional host-plugin installation. Agents Toolkit remains distributed from npm and PAC from Microsoft's documented .NET tool. This evidence-led correction follows STOP → REASSESS → CHANGE PATH.
+
 ## Global Constraints
 
 - Implementation preference: **Use → Configure → Integrate → Automate → Extend → Build.**

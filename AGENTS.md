@@ -1,49 +1,11 @@
-cat > AGENTS.md <<'EOF'
-# AgentFactory Codex Guidance
+# AgentFactory V2
 
-This repository implements the M365 Agent Factory skill pack.
+This Codex-first repository designs, builds, verifies, and packages internal Microsoft 365 agents.
 
-Before making architectural or workflow changes, review:
+Before implementation, apply the approved [V2 design](docs/superpowers/specs/2026-10-21-agentfactory-v2-design.md), [lessons addendum](docs/superpowers/specs/2026-10-21-agentfactory-v2-lessons-addendum.md), and [organization constraints](config/constraints.yaml). Follow the repo-local `agentfactory` and `ryan-agentfactory-stack` skills. The engineering-guardrails reference is mandatory before architecture selection, cloud mutation, and qualification.
 
-- docs/specs/m365-agent-factory-spec.md
-- docs/architecture.md
-- docs/installation.md
-- docs/workflow.md
+Use current first-party Microsoft documentation for mutable platform facts. Diagnose the failing layer before changing architecture. Runtime qualification is distinct from source/static validation. Execute safe repository, CLI, API, MCP, and browser work autonomously; exhaust reasonable supported fallbacks before handoff. Stop at genuine user-presence, admin, security approval, or Production/publication boundaries.
 
-## Workflow
+Development is the default. Production mutation and organization-wide publication require explicit approval. Never invent tenant/environment IDs, schemas, credentials, URLs, connector operations, permissions, or verification results.
 
-Follow the repository's existing approval-gated workflow.
-
-Do not bypass specification approval.
-
-Default Microsoft platform work to Development unless explicitly instructed otherwise.
-
-Production deployment or organization-wide publication requires explicit approval.
-
-## Accuracy
-
-Do not invent:
-
-- tenant IDs
-- environment IDs
-- connector operations
-- credentials
-- URLs
-- Microsoft platform capabilities
-- deployment or verification results
-
-For current Microsoft 365, Power Platform, Copilot Studio, Graph, Entra,
-Azure, or Microsoft agent-platform details, use current Microsoft Learn
-documentation rather than relying only on remembered commands or APIs.
-
-## Verification
-
-Before completing repository changes, run:
-
-python3 -m unittest discover -s tests -v
-
-Report failed or skipped checks.
-
-Do not claim tenant-side or portal-side configuration succeeded unless it was
-actually observed or verified.
-EOF
+Verify repository changes with `PATH=.venv/bin:$PATH python3 -m unittest discover -s tests -v`, `PATH=.venv/bin:$PATH python3 -m compileall scripts tests`, and `git diff --check`.

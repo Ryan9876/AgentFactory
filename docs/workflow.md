@@ -1,5 +1,11 @@
 # V1 workflow
 
+## V2 execution overlay
+
+V2 retains the lifecycle below and adds an autonomy-first engineering overlay: original objective/approved requirements → path-of-least-resistance assessment → Microsoft 365 architecture/platform specialist → implementation plan → engineering execution → independent convergence against original requirements → actual runtime/platform qualification → independent review → final verification. See `.agents/skills/ryan-agentfactory-stack/SKILL.md`.
+
+Use supported paths in order and diagnose the failure layer before any architecture change. Codex automates safe work, tries the next supported CLI/MCP/API/SDK/browser surface, exhausts reasonable options, and hands off only a genuinely human step. Runtime qualification is separate from source/static checks. Work Radar rules apply conditionally by architecture; no product-specific semantics become universal defaults.
+
 The state values are exact contract values. A project may move among them as work proceeds, while `SPEC_CHANGED` requires approval again and `BLOCKED` records a dependency or decision that prevents safe progress.
 
 ```text

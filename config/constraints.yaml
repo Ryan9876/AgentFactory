@@ -1,0 +1,22 @@
+organization:
+  purpose: internal_m365_agents
+  development_environment_only_by_default: true
+licensing:
+  github_copilot_harness: disallowed
+  usage_based_copilot_credits_for_agent_builds: unavailable
+work_iq:
+  m365_copilot: available
+  host_composition_with_agents: available
+  copilot_studio_embedded: disallowed
+  direct_mcp_api: conditional
+agent_architectures:
+  declarative_agent: preferred_when_suitable
+  copilot_studio_standard: allowed
+  github_copilot_harness: disallowed
+  custom_engine: exception_only
+deployment:
+  production_requires_explicit_approval: true
+  organization_publish_requires_explicit_approval: true
+architecture:
+  prefer_native_before_custom: true
+  verify_current_microsoft_docs_before_mutable_platform_decisions: true

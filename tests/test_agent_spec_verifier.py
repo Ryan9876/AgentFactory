@@ -14,8 +14,8 @@ from scripts.build_state import load_state, save_state
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERIFIER_SKILL = ROOT / ".github/skills/agent-spec-verifier/SKILL.md"
-VERIFIER_REFERENCES = ROOT / ".github/skills/agent-spec-verifier/references"
+VERIFIER_SKILL = ROOT / ".agents/skills/agent-spec-verifier/SKILL.md"
+VERIFIER_REFERENCES = ROOT / ".agents/skills/agent-spec-verifier/references"
 
 
 def project_with_evidence(directory):

@@ -41,10 +41,10 @@ class AcceptanceReadinessTests(unittest.TestCase):
     def test_readme_and_installation_report_actual_partial_status(self):
         readme = (ROOT / "README.md").read_text().lower()
         installation = (ROOT / "docs/installation.md").read_text().lower()
-        self.assertIn("partial", readme)
-        self.assertIn("skill-host discovery", readme)
+        self.assertIn("codex-first", readme)
+        self.assertIn("host skill discovery", readme)
         self.assertNotIn("skill files remain marked **not implemented**", readme)
-        self.assertIn("no current environment is selected", installation)
+        self.assertIn("development environment identification blocked", installation)
 
 
 if __name__ == "__main__":
