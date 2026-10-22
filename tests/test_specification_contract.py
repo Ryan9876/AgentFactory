@@ -7,8 +7,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = ROOT / "templates/agent-spec.md"
-CONTRACT = ROOT / ".github/skills/m365-agent-factory/references/specification-contract.md"
-SKILL = ROOT / ".github/skills/m365-agent-factory/SKILL.md"
+CONTRACT = ROOT / ".agents/skills/agentfactory/references/specification-contract.md"
+SKILL = ROOT / ".agents/skills/agentfactory/SKILL.md"
 FIXTURE = ROOT / "tests/fixtures/specification/knowledge-only-draft.md"
 REQUIRED_SECTIONS = (
     "Objective", "Business outcome", "Users", "Channels", "Success criteria",

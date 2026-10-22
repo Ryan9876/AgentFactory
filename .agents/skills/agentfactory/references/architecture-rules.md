@@ -18,7 +18,11 @@ For each component category:
 
 ## Harness
 
-Use **Standard Copilot Studio** by default. Select a newer GHCP-style harness only when explicitly requested or when it provides a material architectural advantage, the required tooling exists, and maturity/compatibility is acceptable. Record the evidence and reason for any exception. Do not claim host support based only on documentation or a catalog entry.
+Select the least-complex viable supported architecture after requirements, licensing, hosting, and automation constraints are known. Declarative agents are preferred for suitable internal M365 knowledge/expertise scenarios; use Standard Copilot Studio for structured conversations or Power Platform-heavy scenarios, adding Power Automate and Dataverse only when justified. Custom engines are exception-only. GitHub Copilot harness is disallowed under current constraints; embedded Work IQ in Copilot Studio is disallowed. Host-composed Work IQ is distinct from conditional direct Work IQ MCP. Documentation or catalog discovery does not prove host support, authentication, or tenant execution.
+
+## Path of least resistance and buildability
+
+Record native capability considered, simplest viable level (Use → Configure → Integrate → Automate → Extend → Build), demonstrated reason earlier levels are insufficient, security/data impact, selected authoring surface, runtime qualification plan, restoration plan when applicable, and reassessment stop conditions. Classify before implementation as `CLOUD_BUILDABLE`, `CLOUD_BUILDABLE_WITH_MANUAL_DEPLOY`, `PORTAL_STEP_REQUIRED`, or `BLOCKED`. Authoring/UI/tool-host failure alone never authorizes a more complex architecture; localize the failing layer and try another supported surface first.
 
 ## Component distinctions and selection
 

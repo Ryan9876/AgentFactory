@@ -1,4 +1,6 @@
-# Architecture
+# AgentFactory V2 Architecture
+
+Select the least-complex viable supported architecture; Standard Copilot Studio is not the universal default. Diagnose platform, tool-host, authentication, browser, environment, authoring, connector, and runtime failures before changing architecture. Source/static validation does not establish cloud synchronization or runtime qualification. The mandatory engineering policy is `.agents/skills/agentfactory/references/engineering-guardrails.md`.
 
 ## Boundary
 

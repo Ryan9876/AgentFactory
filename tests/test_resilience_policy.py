@@ -7,8 +7,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL = ROOT / ".github/skills/power-platform-resilience/SKILL.md"
-REFERENCES = ROOT / ".github/skills/power-platform-resilience/references"
+SKILL = ROOT / ".agents/skills/power-platform-resilience/SKILL.md"
+REFERENCES = ROOT / ".agents/skills/power-platform-resilience/references"
 MATRIX = ROOT / "tests/fixtures/resilience/scenario-coverage.csv"
 SCENARIOS = {
     "knowledge-only", "it-ticketing", "approval-workflow", "ambiguous-objective",

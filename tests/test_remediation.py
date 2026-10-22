@@ -107,8 +107,8 @@ class RemediationTests(unittest.TestCase):
         self.assertEqual(bad_manifest["verdict"], "BLOCK")
 
     def test_skill_documents_component_retest_release_rerun_and_reapproval(self):
-        skill = (ROOT / ".github/skills/agent-spec-verifier/SKILL.md").read_text().lower()
-        guidance = (ROOT / ".github/skills/agent-spec-verifier/references/remediation-routing.md").read_text().lower()
+        skill = (ROOT / ".agents/skills/agent-spec-verifier/SKILL.md").read_text().lower()
+        guidance = (ROOT / ".agents/skills/agent-spec-verifier/references/remediation-routing.md").read_text().lower()
         for phrase in ("smallest owning component", "retest", "release gate", "explicit approval", "do not edit"):
             self.assertIn(phrase, guidance)
         self.assertIn("unrouteable findings stay `block`", skill)

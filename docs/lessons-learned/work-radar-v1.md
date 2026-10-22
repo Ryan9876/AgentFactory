@@ -2,11 +2,7 @@
 
 Captured from the Work Radar V1 lessons-learned review on 2026-10-21.
 
-This document is the durable human-facing summary. The enforceable AgentFactory rules derived from it live in:
-
-`.github/skills/m365-agent-factory/references/engineering-guardrails.md`
-
-and move to `.agents/skills/agentfactory/references/engineering-guardrails.md` during the V2 Codex skill migration.
+This document is the durable human-facing summary. The enforceable AgentFactory rules derived from it live in `.agents/skills/agentfactory/references/engineering-guardrails.md`, the canonical Codex skill location.
 
 ## Why this matters
 

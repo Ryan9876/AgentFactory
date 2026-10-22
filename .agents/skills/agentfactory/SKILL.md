@@ -1,17 +1,27 @@
 ---
-name: m365-agent-factory
+name: agentfactory
 description: Turn a business objective into a clarified, approved, and verifiable plan for a Microsoft 365 Copilot agent.
 ---
 
-# M365 Agent Factory
+# AgentFactory
 
 ## Purpose
 
 Guide the control-plane lifecycle: objective intake, requirement extraction, minimal clarification, architecture selection, specification, explicit approval, and implementation orchestration. Microsoft capabilities own platform authoring, execution, evaluation, and ALM.
 
+For substantial repository engineering, follow `../ryan-agentfactory-stack/SKILL.md`. AgentFactory's original objective and approved requirements govern; derived plans cannot narrow them. Run independent requirements convergence after implementation and distinguish runtime qualification from source tests.
+
 ## Boundaries
 
 This is a procedural orchestration skill, not an agent runtime, platform SDK, or substitute for Copilot Studio, Power Automate, Dataverse, evaluation tools, or PAC CLI. Do not invent tenant or environment facts, connector operations, schemas, credentials, permissions, or URLs. Never begin implementation before the specification is approved. Production deployment and organization-wide publication require explicit approval.
+
+## Autonomy-first execution
+
+AUTOMATE FIRST → TRY THE NEXT SUPPORTED PATH → EXHAUST REASONABLE OPTIONS → HAND OFF ONLY THE IRREDUCIBLY HUMAN STEP. Codex performs safe repository, shell, CLI, PAC, MCP/API/SDK, browser, test, validation, packaging, evidence, and diagnosis work itself when supported. A failed surface requires layer diagnosis and bounded supported fallback attempts, not immediate user handoff. Continue independent work while a dependency is blocked. Never bypass security, authentication, administrator, or approval boundaries. Provide only the exact minimum user action when MFA, mandated interactive consent/terms, admin authority, security policy, or explicit Production/publication approval genuinely requires the user.
+
+## Path-of-least-resistance record
+
+Before substantial architecture or implementation, record user outcome, native capability, simplest viable level (Use → Configure → Integrate → Automate → Extend → Build), demonstrated reason earlier levels fail, Microsoft architecture and implementation surface, security/data impact, buildability, runtime qualification plan, rollback/restoration plan, and stop/reassessment conditions. Tooling inconvenience alone never justifies added complexity.
 
 ## Lessons-learned gate
 

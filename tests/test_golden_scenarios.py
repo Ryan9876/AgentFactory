@@ -46,7 +46,7 @@ class GoldenScenarioTests(unittest.TestCase):
         decisions = case["decisions"]
         self.assertEqual(case["status"], "DECIDED_WITH_UNRESOLVED_DEPENDENCIES")
         self.assertEqual(case["unresolved_blockers"], [])
-        self.assertEqual(decisions["harness"]["selection"], "Standard Copilot Studio")
+        self.assertEqual(decisions["harness"]["selection"], "Declarative agent")
         self.assertIn("SharePoint", decisions["knowledge"]["selection"])
         self.assertEqual(decisions["power_automate"]["selection"], "Not required")
         self.assertEqual(decisions["dataverse_state"]["selection"], "Not required")

@@ -6,8 +6,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-FACTORY_SKILL = ROOT / ".github/skills/m365-agent-factory/SKILL.md"
-CLARIFICATION_POLICY = ROOT / ".github/skills/m365-agent-factory/references/clarification-policy.md"
+FACTORY_SKILL = ROOT / ".agents/skills/agentfactory/SKILL.md"
+CLARIFICATION_POLICY = ROOT / ".agents/skills/agentfactory/references/clarification-policy.md"
 OBJECTIVE_TEMPLATE = ROOT / "templates/objective.md"
 FIXTURES = ROOT / "tests/fixtures/intake"
 

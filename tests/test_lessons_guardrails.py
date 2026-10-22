@@ -5,8 +5,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL = ROOT / ".github/skills/m365-agent-factory/SKILL.md"
-GUARDRAILS = ROOT / ".github/skills/m365-agent-factory/references/engineering-guardrails.md"
+SKILL = ROOT / ".agents/skills/agentfactory/SKILL.md"
+GUARDRAILS = ROOT / ".agents/skills/agentfactory/references/engineering-guardrails.md"
 
 
 class LessonsLearnedGuardrailTests(unittest.TestCase):
