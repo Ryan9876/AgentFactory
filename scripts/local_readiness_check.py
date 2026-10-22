@@ -10,6 +10,7 @@ import subprocess
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Callable, Mapping
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -104,27 +105,35 @@ def _find_profile_id(path: Path | None, visible_name: str) -> str | None:
         return None
 
 
-def _environment_id_matches(output: str, expected: str) -> bool | None:
-    try:
-        data = json.loads(output)
-    except ValueError:
-        return None
-    if isinstance(data, dict):
-        for key, value in data.items():
-            if key.casefold() in {"environmentid", "environment_id"}:
-                return str(value).casefold() == expected.casefold()
-            if isinstance(value, (dict, list)):
-                nested = _environment_id_matches(json.dumps(value), expected)
-                if nested is not None:
-                    return nested
-    elif isinstance(data, list):
-        results = [_environment_id_matches(json.dumps(item), expected) for item in data]
-        return next((result for result in results if result is not None), None)
+def _identity_matches(output: str, expected: str) -> bool:
+    return bool(re.search(rf"(?<![\w.+%-]){re.escape(expected)}(?![\w.+%-])", output, re.IGNORECASE))
+
+
+def _active_pac_profile_line(output: str, expected_upn: str) -> str | None:
+    """Return only the row that PAC marks active and that contains the expected UPN."""
+    for line in output.splitlines():
+        if re.match(r"^\s*\[\d+\]\s+\*\s+", line) and _identity_matches(line, expected_upn):
+            return line
     return None
 
 
-def _identity_matches(output: str, expected: str) -> bool:
-    return bool(re.search(rf"(?<![\w.+%-]){re.escape(expected)}(?![\w.+%-])", output, re.IGNORECASE))
+def _url_hosts(output: str) -> set[str]:
+    hosts = set()
+    for value in re.findall(r"https?://[^\s|]+", output, re.IGNORECASE):
+        host = urlparse(value.rstrip("/),;]")).hostname
+        if host:
+            hosts.add(host.casefold())
+    return hosts
+
+
+def _environment_row_url(output: str, expected_id: str) -> str | None:
+    """Return a URL only when it follows the exact environment ID in one row."""
+    for line in output.splitlines():
+        columns = line.split()
+        for index, column in enumerate(columns[:-1]):
+            if column.casefold() == expected_id.casefold() and columns[index + 1].startswith(("https://", "http://")):
+                return columns[index + 1]
+    return None
 
 
 def run_local_checks(
@@ -188,19 +197,21 @@ def run_local_checks(
                    if name == "pac" else _run(run, [executable, *args[1:]]))
         add(name, "PASS" if code == 0 else "FAIL", "Supported local command responded" if code == 0 else "Command did not complete successfully", required)
 
-    # Inspect only the selected PAC profile before PAC MCP discovery. `auth who`
-    # avoids treating an inactive profile in `auth list` as the current identity.
+    # Inspect the active row from PAC's supported profile list before discovery.
+    # This is local status and avoids auth-who prompts/refreshes in headless shells.
     pac = _command("pac")
     if pac:
-        code, pac_auth = _run_pac(run, [pac, "auth", "who"], home_path)
+        code, pac_auth = _run_pac(run, [pac, "auth", "list"], home_path)
         expected_upn = current_env.get("AGENTFACTORY_EXPECTED_UPN", "").strip()
         if not expected_upn:
             identity_verified = False
-            add("pac_identity", "NOT_TESTED", "Set AGENTFACTORY_EXPECTED_UPN to compare supported PAC account status")
+            active_pac_line = None
+            add("pac_identity", "NOT_TESTED", "Set AGENTFACTORY_EXPECTED_UPN to compare the active supported PAC profile")
         else:
-            matched = code == 0 and _identity_matches(pac_auth, expected_upn)
+            active_pac_line = _active_pac_profile_line(pac_auth, expected_upn) if code == 0 else None
+            matched = active_pac_line is not None
             identity_verified = matched
-            add("pac_identity", "PASS" if matched else "BLOCKED", "Supported PAC status matches intended identity" if matched else "PAC status is unavailable or does not match intended identity", True)
+            add("pac_identity", "PASS" if matched else "BLOCKED", "Active PAC profile matches intended identity" if matched else "PAC active profile is unavailable or does not match intended identity", True)
 
         expected_environment = current_env.get("AGENTFACTORY_DEVELOPMENT_ENVIRONMENT_ID", "").strip()
         if not expected_environment:
@@ -208,10 +219,14 @@ def run_local_checks(
         elif not identity_verified:
             add("development_environment", "BLOCKED" if expected_upn else "NOT_TESTED", "PAC identity does not match the configured account" if expected_upn else "Verify the PAC identity before qualifying its Development target", True)
         else:
-            env_code, environment = _run_pac(run, [pac, "env", "who", "--json"], home_path)
-            matches = _environment_id_matches(environment, expected_environment) if env_code == 0 else False
-            status = "PASS" if matches is True else "BLOCKED" if matches is False else "NOT_TESTED"
-            detail = "Selected PAC environment matches the configured Development target" if matches is True else "Selected PAC environment does not match the configured Development target" if matches is False else "PAC response lacks an explicit environment ID; verify through a supported target selection surface"
+            env_code, environment = _run_pac(run, [pac, "env", "list", "--filter", expected_environment], home_path)
+            target_url = _environment_row_url(environment, expected_environment) if env_code == 0 else None
+            listed = target_url is not None
+            active_hosts = _url_hosts(active_pac_line or "")
+            target_hosts = _url_hosts(target_url or "")
+            matches = listed and bool(active_hosts & target_hosts)
+            status = "PASS" if matches else "BLOCKED" if env_code == 0 else "NOT_TESTED"
+            detail = "Active PAC profile URL matches the listed Development environment ID" if matches else "Active PAC profile does not select the listed Development environment" if env_code == 0 else "PAC could not list the configured Development environment"
             add("development_environment", status, detail, True)
 
         mcp_code, _ = _run_pac(run, [pac, "copilot", "mcp"], home_path)
