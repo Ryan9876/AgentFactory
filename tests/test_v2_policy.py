@@ -12,6 +12,14 @@ class V2PolicyTests(unittest.TestCase):
         self.assertTrue((ROOT / ".agents/skills/ryan-agentfactory-stack/SKILL.md").is_file())
         self.assertFalse((ROOT / ".agents/skills").is_symlink())
 
+    def test_original_objective_and_acceptance_preserve_scope_and_evidence_gaps(self):
+        objective = (ROOT / "docs/product/ORIGINAL-OBJECTIVE.md").read_text().lower()
+        acceptance = (ROOT / "docs/product/ACCEPTANCE.md").read_text().lower()
+        self.assertIn("original requirements outrank", objective)
+        self.assertIn("hand off only the irreducibly human", objective)
+        self.assertIn("runtime qualification", acceptance)
+        self.assertIn("not verified", acceptance)
+
     def test_constraints_encode_organization_policy(self):
         config = load_yaml(ROOT / "config/constraints.yaml")
         self.assertEqual(validate_constraints(config), [])
