@@ -13,6 +13,14 @@ Guide the control-plane lifecycle: objective intake, requirement extraction, min
 
 This is a procedural orchestration skill, not an agent runtime, platform SDK, or substitute for Copilot Studio, Power Automate, Dataverse, evaluation tools, or PAC CLI. Do not invent tenant or environment facts, connector operations, schemas, credentials, permissions, or URLs. Never begin implementation before the specification is approved. Production deployment and organization-wide publication require explicit approval.
 
+## Lessons-learned gate
+
+Before architecture selection, before any cloud mutation, and before final qualification, read `references/engineering-guardrails.md` and apply every rule relevant to the selected architecture and tool surface.
+
+The guardrails are evidence from prior Microsoft 365 agent delivery, not a mandate to reproduce Work Radar's architecture. Apply universal architecture, diagnosis, evidence, security, restoration, path-of-least-resistance, and user-presence rules broadly. Apply PAC, Copilot Studio, browser, semantic, persistence, reconciliation, and diagnostic rules only when those concerns exist in the approved design.
+
+If new evidence invalidates the current implementation path, stop the affected work, record the evidence, reassess the supported native alternatives, and change path rather than continuing a disproven approach.
+
 ## Intake procedure
 
 1. Inspect all supplied conversation and project context before asking anything. Reuse answers and facts already present; do not ask the user to repeat them.
@@ -64,4 +72,5 @@ Implemented as procedural skill guidance, reference policy, objective template, 
 - `references/capability-registry.md`
 - `references/specification-contract.md`
 - `references/build-routing.md`
+- `references/engineering-guardrails.md`
 - `../../../scripts/build_state.py` (state and manifest contract)
