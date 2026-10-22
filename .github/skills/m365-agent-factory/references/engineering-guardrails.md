@@ -1,6 +1,6 @@
 # AgentFactory engineering guardrails from Work Radar V1
 
-Source: lessons learned from the Work Radar V1 build, captured 2026-10-21.
+Source: lessons learned from the Work Radar V1 build, captured 2026-10-21, plus approved AgentFactory autonomy rules.
 
 These rules exist to prevent future AgentFactory builds from repeating known platform, tooling, qualification, security, and delivery failures. Apply the universal rules to every build. Apply Copilot Studio-, PAC-, browser-, semantic-, persistence-, and diagnostic-specific rules only when those surfaces are actually selected by the approved architecture.
 
@@ -23,7 +23,29 @@ Do not add custom infrastructure until a supported Microsoft-native capability h
 9. Distinguish `BLOCKED`, `FAILED`, and `NOT_TESTED/UNQUALIFIED`. They imply different next actions.
 10. Store harness/runtime identity explicitly. Do not infer architecture from telemetry, billing, capacity, or UI field names.
 
-## 2. User-presence and authority boundaries
+## 2. Autonomy-first execution and fallback exhaustion
+
+Codex owns execution by default. The user is the last-resort execution surface, not the normal integration layer.
+
+When an approved step can be performed safely through an available supported surface, Codex should perform it directly. Applicable surfaces include repository/file operations, shell commands, CLI tools, PAC, MCP servers, SDKs/APIs, browser automation, supported portal automation, and other current platform tooling.
+
+Rules:
+
+1. Do not ask the user to run a command, edit a file, click through a supported automatable flow, or copy data between tools when Codex can safely do it itself.
+2. Choose the least-effort supported execution path first. There is no mandatory fixed tool order; use the path best suited to the operation and current host.
+3. If that path fails, localize the failure and try the next-best safe supported path when one exists. Alternatives can include a different CLI/PAC command, MCP, SDK/API, repository/source operation, browser automation, another supported Microsoft surface, or a different supported implementation path.
+4. A tool-host limitation is a reason to switch tools, not automatically a reason to hand the work to the user.
+5. Exhaust reasonable supported automation alternatives before declaring `USER_PRESENCE_REQUIRED`.
+6. Do not bypass MFA, consent, security controls, tenant governance, destructive-action confirmation, explicit publication approval, or administrator-only authority in the name of autonomy.
+7. Genuine `USER_PRESENCE_REQUIRED` and `ADMIN_REQUIRED` boundaries remain valid hard stops for the dependent operation; continue independent work where safe.
+
+### User handoff format
+
+When user action is genuinely unavoidable, request only the smallest irreducibly human action.
+
+Every instruction to the user must appear in one consistent fenced copy/paste block. The block contains only the exact command(s) or UI action(s) the user should perform. Do not put explanation, alternatives, expected-output interpretation, or unrelated steps inside the block. Do not duplicate the actionable instructions outside the block.
+
+## 3. User-presence and authority boundaries
 
 Classify operations before execution:
 
@@ -32,21 +54,21 @@ Classify operations before execution:
 - `ADMIN_REQUIRED`
 - `ARCHITECTURE_DECISION_REQUIRED`
 
-Typical `USER_PRESENCE_REQUIRED` boundaries include MFA, terms acknowledgments, interactive PAC authentication when managed-host persistence fails, and other interactive consent steps.
+Typical `USER_PRESENCE_REQUIRED` boundaries include MFA, terms acknowledgments, interactive PAC authentication when managed-host persistence fails after supported alternatives have been exhausted, and other interactive consent steps.
 
 Typical `ADMIN_REQUIRED` boundaries include tenant policy changes, admin consent, role/DLP changes, and organization-wide publication when policy requires it.
 
-AgentFactory must stop cleanly at a boundary, provide the exact user/admin action or command, preserve state, and resume after the boundary is satisfied.
+AgentFactory must stop cleanly at a boundary, preserve state, continue independent work where safe, and resume after the boundary is satisfied.
 
-## 3. Browser/tool-host rules
+## 4. Browser/tool-host rules
 
 For Power Platform/Copilot Studio browser automation, use a predeclared fallback rather than ad-hoc tool experimentation.
 
-Preferred sequence when browser automation is truly necessary:
+Preferred sequence based on current Work Radar evidence when browser automation is truly necessary:
 
 1. Playwright CLI — one attempt.
 2. If the known managed-host browser launch failure occurs, record the tool host as environment-blocked and switch immediately to Playwright MCP.
-3. Use the user's normal browser only for targeted comparison or a user-presence action.
+3. Use the user's normal browser only for targeted comparison or a genuine user-presence action.
 
 Avoid Chrome DevTools MCP and TinyFish by default for this corporate Power Platform workflow unless a future build records new evidence that they are the better supported path.
 
@@ -59,15 +81,17 @@ When automation and platform behavior disagree, use this diagnostic branch:
 
 A browser page is not authoritative cloud component state. Corroborate with supported cloud/PAC source, component identity, hashes, and runtime tests.
 
-## 4. PAC and cloud synchronization rules
+## 5. PAC and cloud synchronization rules
 
 PAC behavior can differ by execution host. Do not assume authentication/session persistence that works in the user's normal Terminal will work in a managed Codex host.
 
-If managed-host PAC authentication is unreliable, formalize a user-presence boundary instead of repeatedly debugging it:
+If managed-host PAC authentication is unreliable, first try other supported non-user execution paths appropriate to the operation, such as another PAC authentication mode, PAC MCP, a supported SDK/API, or browser automation. Only after those reasonable options are exhausted should PAC become a user-presence boundary.
 
-- Codex authors and validates source, computes hashes, inspects diffs, and prepares exact commands.
-- The user runs the required PAC command in the normal Terminal.
-- Codex inspects the resulting workspace/cloud state and continues verification.
+If user presence is genuinely required:
+
+- Codex authors and validates source, computes hashes, inspects diffs, and prepares the minimum exact action.
+- The user performs only the irreducibly interactive/authenticated step.
+- Codex resumes immediately to inspect resulting workspace/cloud state and continue verification.
 
 For every cloud mutation, the default sequence is:
 
@@ -81,7 +105,7 @@ Required rules:
 4. Never infer success from file timestamps or side effects alone.
 5. A post-push pull/cloud inspection is required to establish synchronization evidence.
 
-## 5. Copilot Studio component lifecycle rules
+## 6. Copilot Studio component lifecycle rules
 
 Do not assume source editing can create arbitrary new Copilot Studio components merely because it can edit existing ones.
 
@@ -91,7 +115,7 @@ Do not assume source editing can create arbitrary new Copilot Studio components 
 4. For Standard-harness agents, if the modern Agents page fails independently of the runtime, use another supported Standard/classic authoring or testing surface rather than redesigning the agent.
 5. Do not interpret UI telemetry/capacity fields as proof of harness identity.
 
-## 6. Temporary cloud experiment rules
+## 7. Temporary cloud experiment rules
 
 Never mutate first and plan cleanup later.
 
@@ -110,7 +134,7 @@ Enable a diagnostic only for the qualification window, disable it immediately af
 
 A borrowed inactive component is an emergency qualification technique, not a preferred product architecture. Prefer a supported purpose-built diagnostic component when one exists.
 
-## 7. Generative-to-deterministic boundary rules
+## 8. Generative-to-deterministic boundary rules
 
 When deterministic downstream behavior depends on a semantic fact, preserve the fact as structured data when it is first known.
 
@@ -132,7 +156,7 @@ General rules:
 
 These rules are conditional: apply them only to builds with generative classification or generative-to-deterministic handoff.
 
-## 8. Persistence, identity, and flow scope rules
+## 9. Persistence, identity, and flow scope rules
 
 Before adding more intelligence to a persistent workflow, prove:
 
@@ -142,7 +166,7 @@ Before adding more intelligence to a persistent workflow, prove:
 
 Once a reconciliation/core flow is proven safe and idempotent, keep it narrow. Prefer a stable core plus small bounded extension flows/sidecars over a single flow that accumulates unrelated create/update/enrich/reprioritize/repair responsibilities.
 
-## 9. Security contract
+## 10. Security contract
 
 Every project must establish security boundaries before implementation, including where applicable:
 
@@ -156,7 +180,7 @@ Every project must establish security boundaries before implementation, includin
 
 Tooling inconvenience is never a sufficient reason to weaken security. Do not disable secure-output protections, expose corporate data to an unapproved external plane, add a custom API only for observability, or change tenant roles/DLP for convenience without an explicit approved architecture/security decision.
 
-## 10. Qualification and test rules
+## 11. Qualification and test rules
 
 For every material generative or behavioral contract, define a fixture matrix before runtime qualification:
 
@@ -172,7 +196,7 @@ For model-derived behavior, a single successful run is not enough. Important fix
 
 Runtime qualification must verify the actual selected target runtime, not a surrogate authoring or source-validation surface.
 
-## 11. Evidence and frozen-component rules
+## 12. Evidence and frozen-component rules
 
 Evidence is a first-class project artifact. For each milestone preserve:
 
@@ -192,7 +216,7 @@ Recommended frozen-component fields:
 
 `component`, `component_id`, `expected_hash`, `status`, `qualification_date`, `allowed_change_scope`.
 
-## 12. Anti-regression rules
+## 13. Anti-regression rules
 
 Future AgentFactory builds must enforce these unless a newer verified platform fact explicitly supersedes them:
 
@@ -211,8 +235,11 @@ Future AgentFactory builds must enforce these unless a newer verified platform f
 13. No repeated debugging of a known tool-host limitation when a proven fallback exists.
 14. No silent promotion of observed behavior into approved product semantics.
 15. No widening of a qualified core workflow without a demonstrated requirement.
+16. No user handoff for work Codex can safely complete through another supported execution path.
+17. No declaration of `USER_PRESENCE_REQUIRED` until reasonable supported automation alternatives have been exhausted or the boundary is intrinsically interactive/privileged.
+18. No user instructions outside the standard copy/paste instruction block; the block contains only the exact requested actions.
 
-## 13. Required decision record additions
+## 14. Required decision record additions
 
 Before implementing a feature, the architecture/feature decision should capture:
 
@@ -220,16 +247,19 @@ Before implementing a feature, the architecture/feature decision should capture:
 - Native capability — Microsoft-native capability that already addresses it.
 - Simplest path — Use / Configure / Integrate / Automate / Extend / Build.
 - Why earlier levels are insufficient — demonstrated limitations only.
+- Automation plan — which supported surfaces Codex can use autonomously.
+- Fallback plan — next-best supported paths if the first execution surface fails.
+- User/admin boundary — the irreducibly human/privileged action, if any.
 - Security impact — data boundaries and identities affected.
 - Runtime qualification plan — how behavior will be proven in the actual target runtime.
 - Rollback/restoration — how temporary cloud changes are undone.
 - Stop conditions — evidence that would cause the plan to change.
 
-## 14. Applicability rule
+## 15. Applicability rule
 
 Do not overfit future agents to Work Radar.
 
-- The architecture/diagnosis, evidence, security, restoration, user-presence, and path-of-least-resistance rules are broadly applicable.
+- The architecture/diagnosis, autonomy, evidence, security, restoration, user-presence, and path-of-least-resistance rules are broadly applicable.
 - PAC and Copilot Studio component rules apply only when those tools/surfaces are selected.
 - Semantic, priority, persistence, and reconciliation rules apply only when the future agent has those concerns.
 - Work Radar's specific priority bands, field names, Calendar/Inbox/Teams sequence, and product behavior are examples, not universal AgentFactory requirements.
