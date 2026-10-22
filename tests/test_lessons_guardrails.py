@@ -46,6 +46,14 @@ class LessonsLearnedGuardrailTests(unittest.TestCase):
         self.assertIn("apply them only", text)
         self.assertIn("examples, not universal agentfactory requirements", text)
 
+    def test_browser_identity_and_regression_profiles_are_separate(self):
+        text = GUARDRAILS.read_text().lower()
+        self.assertIn("chrome stable", text)
+        self.assertIn("profile `agentfactory`", text)
+        self.assertIn("chrome for testing", text)
+        self.assertIn("disposable isolated profile", text)
+        self.assertIn("do not use this authenticated profile for generic automation", text)
+
 
 if __name__ == "__main__":
     unittest.main()

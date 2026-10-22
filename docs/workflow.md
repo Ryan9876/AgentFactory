@@ -8,6 +8,16 @@ Use supported paths in order and diagnose the failure layer before any architect
 
 The state values are exact contract values. A project may move among them as work proceeds, while `SPEC_CHANGED` requires approval again and `BLOCKED` records a dependency or decision that prevents safe progress.
 
+## Capability-specific execution host
+
+Before dispatch, resolve each approved capability using `execution_routing.routes` in `config/capability-registry.yaml` and `scripts/host_routing.py`. Cloud is preferred for reproducible source engineering, isolated tests, package/build validation, and public research without tenant identity. Desktop Local is preferred for Microsoft authentication, tenant operations, and runtime qualification. Public documentation may use either supported host.
+
+Use the preferred host, then an explicitly capable alternate host only when the preferred host/tool surface itself is unavailable. Try the next supported platform surface before an irreducible human handoff. Never host-hop to bypass authentication, MFA, consent, permissions, tenant/admin/security policy, licensing, billing, Production approval, or organization publication approval. Keep policy blockers separate from tool-host failure and stop at `USER_PRESENCE_REQUIRED` or `ADMIN_REQUIRED`.
+
+Regular Chrome Stable with the dedicated visible `AgentFactory` profile is the local Microsoft identity and real-session verification surface. Its directory ID is discovered by visible profile name; it is not an unattended-authentication guarantee. Chrome for Testing with a disposable isolated profile is the deterministic browser regression surface. Keep the persistent authenticated profile out of generic regression.
+
+Authenticate PAC before starting/restarting PAC MCP. Every fresh Copilot Studio MCP process must use supported sign-in, verify account and Development environment, then refresh the live online catalog. Runtime qualification still requires runtime evidence beyond package installation, tool/schema discovery, or prior browser state.
+
 ```text
 OBJECTIVE_CAPTURED
 → CLARIFICATION_REQUIRED (when a consequential unknown remains)

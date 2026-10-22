@@ -22,6 +22,29 @@ capabilities:
   - declarative_agent.provision
   - declarative_agent.package
   - power_platform.pac_mcp
+  - repository.engineering
+  - repository.source_implementation
+  - repository.reproducible_tests
+  - package.build_validation
+  - public.documentation
+  - public.research
+  - microsoft_learn.documentation
+  - microsoft.interactive_authentication
+  - power_platform.authenticated_operations
+  - power_platform.development_operations
+  - copilot_studio.mcp
+  - copilot_studio.environment_selection
+  - agents_toolkit.authenticated_operations
+  - microsoft.developer_portal
+  - microsoft.graph.tenant_operations
+  - work_iq.tenant_operations
+  - work_iq.host_composition
+  - wiqd.auth
+  - copilot_studio.agent_inventory
+  - agents_toolkit.custom_app_upload
+  - workiq.upstream_service_principal
+  - workiq.direct_mcp
+  - microsoft.runtime_qualification
 providers:
   microsoft_learn:
     microsoft_support_status: documented
@@ -244,3 +267,134 @@ providers:
     evidence: ["Approved V2 organization constraints"]
     limitations: ["Must not be selected"]
     fallback: declarative_agent_or_standard_copilot_studio
+
+# Host selection belongs to the capability catalog; evidence and routing remain separate.
+execution_routing:
+  schema_version: 1
+  hosts:
+    codex_cloud:
+      role: reproducible_repository_engineering_and_public_research
+    desktop_local:
+      role: authenticated_microsoft_tenant_execution
+  surface_preference: [mcp, cli, api_sdk, supported_browser_ui, human_action]
+  host_fallback:
+    when: preferred_host_capability_unavailable
+    require_fallback_capability_support: true
+    never_when_blocker: [BLOCKED_BY_TENANT_OR_POLICY, AUTH, USER_PRESENCE_REQUIRED, ADMIN_REQUIRED]
+    never_to_bypass: [permissions, admin_policy, security_policy, mfa, consent, licensing, billing, production_approval, organization_publication_approval]
+  browser_surfaces:
+    persistent_identity:
+      browser: chrome_stable
+      profile_name: AgentFactory
+      profile_requirement: dedicated_persistent_authenticated_profile
+      authentication_surface: microsoft_interactive_authentication
+      generic_regression: false
+      absolute_profile_path_required: false
+    deterministic_regression:
+      browser: chrome_for_testing
+      profile: disposable_isolated
+      profile_requirement: disposable_user_data_directory
+      generic_regression: true
+      persistent_authentication: false
+  authentication:
+    browser_state_is_unattended_proof: false
+    fresh_copilot_studio_mcp_requires: [verify_account, verify_development_environment, refresh_live_catalog]
+    process_local_credentials: true
+  startup_order:
+    pac_mcp: [pac_authentication, start_or_restart_pac_mcp]
+    copilot_studio_mcp: [connect, verify_account, verify_development_environment, refresh_live_catalog]
+  evidence_states:
+    labels: [DESIGNED, IMPLEMENTED, CLOUD_SYNCHRONIZED, RUNTIME_QUALIFIED, BLOCKED, FAILED, NOT_TESTED, USER_PRESENCE_REQUIRED, ADMIN_REQUIRED]
+    default_state: NOT_TESTED
+    tool_discovery_does_not_imply_runtime_qualification: true
+  routes:
+    repository_engineering:
+      capabilities: [repository.engineering, repository.source_implementation, repository.reproducible_tests, package.build_validation, declarative_agent.validate, declarative_agent.package]
+      preferred_host: codex_cloud
+      fallback_host: desktop_local
+      preferred_surface_order: [repository_tools, local_tests]
+      runtime_qualification_host: codex_cloud
+      known_blocker_type: [TOOL_HOST]
+      human_presence_requirement: none
+    public_information:
+      capabilities: [public.documentation, public.research, microsoft_learn.documentation]
+      preferred_host: either
+      host_preference_order: [codex_cloud, desktop_local]
+      fallback_host: null
+      preferred_surface_order: [mcp, cli, api_sdk, browser_ui]
+      runtime_qualification_host: not_applicable
+      known_blocker_type: [TOOL_HOST]
+      human_presence_requirement: none
+    microsoft_interactive_authentication:
+      capabilities: [microsoft.interactive_authentication]
+      preferred_host: desktop_local
+      fallback_host: codex_cloud
+      preferred_surface_order: [supported_auth_flow, browser_ui, human_action]
+      authentication_surface: microsoft_interactive_authentication
+      browser_surface: chrome_stable
+      browser_profile_requirement: AgentFactory
+      runtime_qualification_host: desktop_local
+      known_blocker_type: [AUTH, USER_PRESENCE_REQUIRED, ADMIN_REQUIRED, BLOCKED_BY_TENANT_OR_POLICY]
+      human_presence_requirement: when_mfa_or_consent_requires
+    power_platform_tenant_operations:
+      capabilities: [power_platform.authenticated_operations, power_platform.development_operations, power_platform.pac_mcp, copilot_studio.standard.author, copilot_studio.standard.manage, copilot_studio.standard.test, power_automate.connector.discover, power_automate.flow.build, power_automate.flow.edit, power_automate.flow.validate, power_automate.flow.preflight, power_automate.flow.execute, power_automate.flow.diagnose, dataverse.metadata, dataverse.data, dataverse.security, dataverse.admin, dataverse.solution, power_platform.solution.alm, agent.evaluate]
+      preferred_host: desktop_local
+      fallback_host: codex_cloud
+      preferred_surface_order: [mcp, cli, api_sdk, supported_browser_ui]
+      authentication_surface: pac_or_supported_microsoft_auth
+      runtime_qualification_host: desktop_local
+      known_blocker_type: [BLOCKED_BY_TENANT_OR_POLICY, AUTH, ADMIN_REQUIRED]
+      human_presence_requirement: when_mfa_or_consent_requires
+      host_fallback_condition: host_or_surface_unavailable_only
+    copilot_studio_mcp:
+      capabilities: [copilot_studio.mcp, copilot_studio.environment_selection, copilot_studio.agent_inventory]
+      preferred_host: desktop_local
+      fallback_host: codex_cloud
+      preferred_surface_order: [mcp, cli, api_sdk, supported_browser_ui]
+      authentication_surface: copilot_studio_mcp_supported_sign_in
+      browser_surface: chrome_stable
+      browser_profile_requirement: AgentFactory
+      runtime_qualification_host: desktop_local
+      known_blocker_type: [BLOCKED_BY_TENANT_OR_POLICY, AUTH, USER_PRESENCE_REQUIRED, ADMIN_REQUIRED]
+      human_presence_requirement: when_mfa_or_consent_requires
+      host_fallback_condition: host_or_surface_unavailable_only
+    agents_toolkit:
+      capabilities: [agents_toolkit.authenticated_operations, agents_toolkit.custom_app_upload, declarative_agent.create, declarative_agent.provision]
+      preferred_host: desktop_local
+      fallback_host: codex_cloud
+      preferred_surface_order: [cli, mcp, api_sdk, supported_browser_ui]
+      authentication_surface: agents_toolkit_supported_auth
+      browser_surface: chrome_stable
+      browser_profile_requirement: AgentFactory
+      runtime_qualification_host: desktop_local
+      known_blocker_type: [BLOCKED_BY_TENANT_OR_POLICY, AUTH, USER_PRESENCE_REQUIRED, ADMIN_REQUIRED]
+      human_presence_requirement: when_mfa_or_consent_requires
+      host_fallback_condition: host_or_surface_unavailable_only
+    microsoft_tenant_services:
+      capabilities: [microsoft.developer_portal, microsoft.graph.tenant_operations, work_iq.tenant_operations, work_iq.host_composition, wiqd.auth, workiq.upstream_service_principal, workiq.direct_mcp, microsoft.runtime_qualification]
+      preferred_host: desktop_local
+      fallback_host: codex_cloud
+      preferred_surface_order: [mcp, cli, api_sdk, supported_browser_ui]
+      authentication_surface: supported_microsoft_tenant_authentication
+      browser_surface: chrome_stable
+      browser_profile_requirement: AgentFactory
+      runtime_qualification_host: desktop_local
+      known_blocker_type: [BLOCKED_BY_TENANT_OR_POLICY, AUTH, USER_PRESENCE_REQUIRED, ADMIN_REQUIRED]
+      human_presence_requirement: when_mfa_or_consent_requires
+      host_fallback_condition: host_or_surface_unavailable_only
+  capability_evidence_notes:
+    runtime_qualification_is_never_inferred_from_tool_discovery: true
+    installed_or_listed_tools_do_not_prove_authentication_or_runtime: true
+    known_blockers:
+      - type: BLOCKED_BY_TENANT_OR_POLICY
+        capability: copilot_studio.agent_inventory
+        reason: Development user is missing prvReadbot.
+      - type: BLOCKED_BY_TENANT_OR_POLICY
+        capability: agents_toolkit.custom_app_upload
+        reason: Custom-app upload and sideload policy is disabled for this account.
+      - type: BLOCKED_BY_TENANT_OR_POLICY
+        capability: workiq.upstream_service_principal
+        reason: Tenant Work IQ service principal is missing.
+      - type: NOT_TESTED
+        capability: workiq.direct_mcp
+        reason: Direct Work IQ MCP permissions, tenant enablement, and billing readiness remain unverified.

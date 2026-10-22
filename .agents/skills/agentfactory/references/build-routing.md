@@ -5,7 +5,8 @@
 1. Confirm the user-selected target; Development is the default. Do not infer an environment from a saved profile.
 2. Verify the approved spec SHA-256 before initial build or resume. A mismatch sets `SPEC_CHANGED` and blocks work until explicit reapproval.
 3. Load/check only capabilities required by the approved architecture, using current registry evidence and the target environment's prerequisites.
-4. Generate dependency-ordered manifest tasks mapped to stable capability intents and only relevant requirement IDs.
+4. Resolve each capability through `scripts/host_routing.py` and `execution_routing.routes` in `config/capability-registry.yaml`. Use the preferred host, then an explicitly supported alternate host only for a host/tool-surface outage, then another supported platform surface, then a human handoff if intrinsically required.
+5. Generate dependency-ordered manifest tasks mapped to stable capability intents and only relevant requirement IDs.
 
 Use the deterministic API in `../../../../scripts/build_state.py` for approval digest storage, integrity gates, manifest dependency ordering, task evidence transitions, state serialization, and resume selection. If the runtime cannot invoke the helper, record that dependency as blocked; do not approximate the digest or transition rules.
 
@@ -20,7 +21,11 @@ Use the deterministic API in `../../../../scripts/build_state.py` for approval d
 
 ## Capability intent route matrix
 
-See `capability-routes.csv` for task patterns, capability intent, relevant requirement IDs, focused context, and unavailable behavior. The matrix covers Copilot Studio authoring/testing, Power Automate, Dataverse, evaluation, and solution ALM. It is routing guidance, not proof that an operation is authorized or available in the selected environment.
+See `capability-routes.csv` for task patterns, capability intent, relevant requirement IDs, focused context, and unavailable behavior. The matrix covers Copilot Studio authoring/testing, Power Automate, Dataverse, evaluation, and solution ALM. The execution-host mapping is in `config/capability-registry.yaml`; routing is guidance, not proof that an operation is authorized or available in the selected environment.
+
+Never host-hop to work around authentication/MFA, consent, missing permissions, tenant/admin/security policy, licensing, billing, Production approval, or publication approval. Preserve the blocker as `BLOCKED_BY_TENANT_OR_POLICY` or the existing evidence state. `USER_PRESENCE_REQUIRED` and `ADMIN_REQUIRED` stop at their respective authority boundary.
+
+For PAC MCP, authenticate PAC first, then start or restart the MCP process to avoid stale profile state. For every fresh Copilot Studio MCP process, verify account and Development environment, then refresh the online schema/tool catalog. Keep process-local credentials opaque. Tool discovery is not runtime qualification.
 
 ## Harness decision
 

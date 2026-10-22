@@ -6,12 +6,16 @@ Select the least-complex viable supported architecture; Standard Copilot Studio 
 
 Agent Factory is a thin orchestration and control plane. It maintains objective context, decisions, approved requirements, routing, progress, evidence, and acceptance state. The execution plane consists of Microsoft Copilot Studio and Power Platform capabilities that create, run, validate, evaluate, and package platform artifacts.
 
+Execution host is selected per capability from `config/capability-registry.yaml`; it is not a global Cloud/Local switch. Codex Cloud is the reproducible engineering surface. Desktop Local is the preferred Microsoft tenant-authenticated and target-runtime surface. `scripts/host_routing.py` applies the declared capability preference and blocks fallback on policy, permission, authentication, MFA, consent, billing/licensing, admin, or publication boundaries.
+
 ```text
 User objective
       ↓
 Custom control-plane skills ── state/spec/traceability ── approval gates
       ↓ focused delegation
 Microsoft capability registry
+      ↓
+Capability-specific host route: Codex Cloud | Desktop Local
       ↓
 Copilot Studio | Power Automate | Dataverse | evaluation | solution ALM
       ↓ evidence
@@ -27,6 +31,8 @@ The Factory does not implement an agent runtime, Copilot Studio schema, Power Au
 ## Microsoft capabilities
 
 Use Microsoft capabilities for platform operations wherever they exist. The capability registry records capability family, purpose, availability, host, version/compatibility evidence, and fallback or blocking behavior without binding the control plane to a particular evolving command. Route only relevant requirements to the responsible capability.
+
+Choose the MCP, CLI, API/SDK, supported browser UI, or human-action surface according to capability support, with MCP/CLI preferred when they expose the operation. Browser access supplies identity, session verification, and a supported fallback; it does not replace reliable platform interfaces. See `docs/supported-platforms.md` for the Cloud/Local and Chrome surface split.
 
 ## Architecture rules
 

@@ -2,6 +2,20 @@
 
 The repository is Codex-first. Canonical skills are in `.agents/skills/`. Run `scripts/bootstrap_codex_cloud.sh` to install local prerequisites; it creates `.venv/` for Python dependencies and does not authenticate to Microsoft or mutate a tenant. Then run `PATH=.venv/bin:$PATH python3 scripts/readiness_check.py --json`.
 
+## Desktop Local readiness
+
+For Microsoft tenant work on the local workstation, first create the repository's Python environment and run the separate read-only local check:
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+PATH=.venv/bin:$PATH python3 scripts/local_readiness_check.py --json
+```
+
+This local path is separate from `scripts/bootstrap_codex_cloud.sh` and `scripts/readiness_check.py`. It checks local execution, Node/.NET, PAC/ATK/WIQD commands, PAC MCP discovery, Copilot Studio MCP package availability, regular Chrome Stable, and the Chrome profile directory mapped to visible name `AgentFactory`. It invokes only supported status/help/discovery commands; it never starts an MCP server or initiates sign-in. PAC authentication is inspected before PAC MCP discovery. The checker emits status and a Chrome profile directory identifier, never the absolute profile path or raw CLI output.
+
+Set `AGENTFACTORY_EXPECTED_UPN` and `AGENTFACTORY_DEVELOPMENT_ENVIRONMENT_ID` in the local shell to compare the selected PAC profile (`pac auth who`) and `pac env who --json` with the intended account and explicit Development environment. The checker uses `atk auth list` only to report whether the account is connected in Agents Toolkit; it does not infer which ATK account is active. It reports `NOT_TESTED` when an expected value or explicit environment ID is absent; it does not infer identity from installed tools, profile names, or organization IDs. Verify the browser account through supported visible browser state. Readiness reports do not perform login, change profile selection, or mutate Microsoft resources.
+
 Tooling follows current first-party setup surfaces: [Work IQ Dev Tools installation](https://microsoft.github.io/wiqd/getting-started/installation/) uses Microsoft's supported installer, not an assumed npm package; [Agents Toolkit CLI](https://learn.microsoft.com/microsoftteams/platform/toolkit/microsoft-365-agents-toolkit-cli) is distributed from npm; [PAC installation](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction) uses Microsoft's documented .NET tool. [Microsoft Learn MCP](https://github.com/MicrosoftDocs/mcp) documents `codex mcp add microsoft-learn --url https://learn.microsoft.com/api/mcp`. Bootstrap skips optional WIQD host-plugin setup, does not configure Work IQ MCP, and does not authenticate.
 
 The checker reports repository/tool-host facts and explicitly leaves Microsoft authentication and Development environment identification blocked until observed. Never treat discovery or installation as authentication, tenant execution, cloud synchronization, or runtime qualification. The V1 pilot in `docs/v1-acceptance.md` remains preserved historical evidence and does not qualify a new Codex host.

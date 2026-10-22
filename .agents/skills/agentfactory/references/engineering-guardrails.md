@@ -42,6 +42,8 @@ AgentFactory must stop cleanly at a boundary, provide the exact user/admin actio
 
 For Power Platform/Copilot Studio browser automation, use a predeclared fallback rather than ad-hoc tool experimentation.
 
+Keep browser identity and generic regression separate: regular Chrome Stable with the dedicated visible profile `AgentFactory` is the persistent Microsoft identity and interactive-authentication surface. Discover its profile directory from Chrome metadata; do not assume or persist a directory identifier. Do not use this authenticated profile for generic automation or regression. Use Chrome for Testing with a disposable isolated profile for deterministic browser regression. Existing browser sign-in does not prove unattended authentication or runtime qualification.
+
 Preferred sequence when browser automation is truly necessary:
 
 1. Playwright CLI — one attempt.

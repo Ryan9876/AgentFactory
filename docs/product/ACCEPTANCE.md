@@ -17,6 +17,13 @@ This is repository acceptance evidence, not tenant or cloud qualification. Statu
 | Codex host has WIQD, Microsoft Learn MCP, and live Microsoft authentication/Development target | Local readiness output | Microsoft Learn MCP PASS; WIQD FAIL (not installed); authentication and Development target BLOCKED / NOT VERIFIED |
 | Platform runtime qualification of the new declarative path | No target agent built; intentionally deferred until repository/readiness acceptance and approved project spec | NOT VERIFIED |
 
+## Hybrid execution-host routing contract
+
+| Requirement / outcome | Evidence | Status |
+|---|---|---|
+| Capability-specific Cloud/Local/either preference, supported fallback, auth/policy/human stop, browser-role separation, and distinct runtime evidence | `config/capability-registry.yaml`, `scripts/host_routing.py`, `tests/test_host_routing.py`, `tests/test_capability_registry.py` | Locally contract-tested; no tenant runtime claim |
+| Separate Desktop Local readiness reports local tools, PAC/ATK state, PAC MCP, Copilot Studio MCP package, Stable/profile discovery, expected identity/environment when configured, and current known blockers without emitting raw CLI output or absolute profile paths | `scripts/local_readiness_check.py`, `tests/test_local_readiness.py`, `docs/installation.md` | Locally contract-tested; live account/browser/environment state remains environment-dependent |
+
 ## Workflow provenance
 
 - Product truth: approved V2 design/addenda plus this original-objective record and existing AgentFactory requirement/approval machinery.

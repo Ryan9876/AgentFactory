@@ -12,4 +12,4 @@ Declarative agents are preferred when suitable. GitHub Copilot harness agents an
 
 ## Readiness
 
-Repository tests prove local contracts only. Source/static validation is distinct from cloud synchronization and target-runtime qualification. Microsoft authentication, Development environment suitability, host skill discovery, and live first-party tooling remain to be verified in the fresh Codex Cloud environment; consult `docs/installation.md` and `docs/first-build.md`.
+Repository tests prove local contracts only. Source/static validation is distinct from cloud synchronization and target-runtime qualification. Use `scripts/readiness_check.py` for the Codex Cloud toolchain and host skill discovery, and `scripts/local_readiness_check.py --json` for the Desktop Local toolchain, Chrome profile mapping, and supported PAC/ATK account/environment status. Interactive browser identity still requires supported visible browser verification; a listed tool or profile does not qualify tenant runtime. See `docs/installation.md`, `docs/supported-platforms.md`, and `docs/first-build.md`.

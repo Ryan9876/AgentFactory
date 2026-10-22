@@ -39,4 +39,16 @@ class CapabilityRegistryTests(unittest.TestCase):
     def test_no_duplicate_v1_json_registry_remains_authoritative(self):
         self.assertFalse((ROOT / ".agents/skills/agentfactory/references/capability-registry.json").exists())
 
+    def test_execution_routing_covers_registered_capabilities_without_user_paths(self):
+        data = load_yaml(REGISTRY)
+        routing = data["execution_routing"]
+        routed = {capability for route in routing["routes"].values() for capability in route["capabilities"]}
+        self.assertEqual(routed, set(data["capabilities"]))
+        self.assertNotIn("/Users/", str(routing))
+        self.assertEqual(routing["browser_surfaces"]["persistent_identity"]["profile_name"], "AgentFactory")
+        blockers = routing["host_fallback"]["never_when_blocker"]
+        self.assertIn("BLOCKED_BY_TENANT_OR_POLICY", blockers)
+        self.assertIn("USER_PRESENCE_REQUIRED", blockers)
+
+
 if __name__ == "__main__": unittest.main()
