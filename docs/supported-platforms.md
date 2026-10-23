@@ -29,3 +29,5 @@ Host selection follows capability support in `config/capability-registry.yaml`, 
 Within a supported capability, prefer MCP, CLI, or API/SDK for implementation; use browser UI for authentication, verification, or a supported fallback. A tool or schema listing remains discovery evidence and does not establish `RUNTIME_QUALIFIED`.
 
 Known Development tenant/policy findings are blockers, not host failures: agent inventory lacks `prvReadbot`; custom-app upload/sideload is disabled; WIQD's upstream Work IQ service principal is missing; direct Work IQ MCP permissions, tenant enablement, and billing remain unverified. Keep these separate from tool availability and runtime qualification.
+
+Probe A partially runtime-qualified Copilot Studio MCP sign-in/environment selection and connection/workflow list reads. Agent inventory remains blocked by `prvReadbot`; advertised mutation/evaluation operations remain untested. See [the Probe A evidence record](qualification-labs/copilot-studio-mcp-probe-a.md).

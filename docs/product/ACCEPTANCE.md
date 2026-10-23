@@ -23,6 +23,7 @@ This is repository acceptance evidence, not tenant or cloud qualification. Statu
 |---|---|---|
 | Capability-specific Cloud/Local/either preference, supported fallback, auth/policy/human stop, browser-role separation, and distinct runtime evidence | `config/capability-registry.yaml`, `scripts/host_routing.py`, `tests/test_host_routing.py`, `tests/test_capability_registry.py` | Locally contract-tested; no tenant runtime claim |
 | Separate Desktop Local readiness reports local tools, PAC/ATK state, PAC MCP, Copilot Studio MCP package, Stable/profile discovery, expected identity/environment when configured, and current known blockers without emitting raw CLI output or absolute profile paths | `scripts/local_readiness_check.py`, `tests/test_local_readiness.py`, `docs/installation.md` | Locally contract-tested; live account/browser/environment state remains environment-dependent |
+| Probe A distinguishes runtime-qualified Copilot Studio MCP reads from blocked inventory and schema-advertised, untested lifecycle operations | `docs/qualification-labs/copilot-studio-mcp-probe-a.md`, `config/capability-registry.yaml` | Sign-in/environment selection and connection/workflow reads runtime-qualified; agent inventory blocked by `prvReadbot`; mutations not tested |
 
 ## Workflow provenance
 

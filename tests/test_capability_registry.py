@@ -36,6 +36,15 @@ class CapabilityRegistryTests(unittest.TestCase):
             self.assertTrue(row["focused_context"].strip())
             self.assertTrue(row["unavailable_behavior"].strip())
 
+    def test_probe_a_keeps_schema_discovery_separate_from_runtime_qualification(self):
+        notes = load_yaml(REGISTRY)["execution_routing"]["capability_evidence_notes"]
+        probe = notes["probe_a_copilot_studio_mcp"]
+        self.assertEqual(probe["agent_inventory"], "BLOCKED_BY_TENANT_OR_POLICY")
+        self.assertFalse(probe["schema_advertised_operations_are_runtime_qualified"])
+        self.assertEqual(probe["create_update_validate_test_evaluate_cleanup"], "NOT_TESTED")
+        self.assertTrue(probe["no_agent_created"])
+        self.assertTrue(probe["probe_b_waits_for_inventory_permission_resolution"])
+
     def test_no_duplicate_v1_json_registry_remains_authoritative(self):
         self.assertFalse((ROOT / ".agents/skills/agentfactory/references/capability-registry.json").exists())
 

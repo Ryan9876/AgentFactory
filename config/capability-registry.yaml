@@ -400,6 +400,20 @@ execution_routing:
       human_presence_requirement: when_mfa_or_consent_requires
       host_fallback_condition: host_or_surface_unavailable_only
   capability_evidence_notes:
+    probe_a_copilot_studio_mcp:
+      record: docs/qualification-labs/copilot-studio-mcp-probe-a.md
+      date: 2026-10-22
+      outcome: COPILOT_STUDIO_MCP_LIFECYCLE_BLOCKED
+      fresh_process_sign_in_and_development_selection: RUNTIME_QUALIFIED
+      connection_list_read: RUNTIME_QUALIFIED
+      workflow_list_read: RUNTIME_QUALIFIED
+      agent_inventory: BLOCKED_BY_TENANT_OR_POLICY
+      blocker: prvReadbot
+      schema_advertised_operations_are_runtime_qualified: false
+      focused_describe_actions_contracts_retrieved: false
+      create_update_validate_test_evaluate_cleanup: NOT_TESTED
+      no_agent_created: true
+      probe_b_waits_for_inventory_permission_resolution: true
     runtime_qualification_is_never_inferred_from_tool_discovery: true
     installed_or_listed_tools_do_not_prove_authentication_or_runtime: true
     known_blockers:
