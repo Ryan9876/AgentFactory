@@ -24,6 +24,12 @@ Do not react to a browser, authoring UI, authentication, environment, connector,
 
 A supported alternative surface is preferable to a custom workaround when the underlying platform/runtime remains sound.
 
+### Prefer structured configuration over browser automation
+
+Work Radar over-relied on browser automation to configure agents. The documented lesson is to express configuration as code or structured configuration wherever the platform permits and treat portal interaction as authentication, verification, runtime observation, or an unsupported-operation fallback. Browser configuration caused selector and timing problems, modal/dialog failures, unreliable controls, repeated retries, environment-dependent behavior, slower work, weak idempotency/reproducibility, and uncertainty about whether changes were saved.
+
+For each operation, check supported MCP, CLI, API/SDK, code/config editor, declarative/source, and import/export surfaces. Record evidence for rejected higher-priority routes before a bounded browser fallback. An open browser or convenience is not justification. Return adjacent work to structured surfaces. Do not infer runtime qualification from a successful click or file edit.
+
 ### Static correctness is not runtime qualification
 
 YAML parsing, local tests, PAC acceptance, Dataverse presence, source synchronization, and authoring UI rendering are useful evidence but do not prove runtime semantics.

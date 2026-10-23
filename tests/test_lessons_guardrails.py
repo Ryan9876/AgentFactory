@@ -35,6 +35,9 @@ class LessonsLearnedGuardrailTests(unittest.TestCase):
             "security contract",
             "repeatability fixtures",
             "no architecture redesign solely because one microsoft authoring surface is malfunctioning",
+            "structured configuration before browser automation",
+            "stop → reassess → change path",
+            "browser automation is allowed only for the bounded operation",
         )
         for phrase in required:
             with self.subTest(phrase=phrase):

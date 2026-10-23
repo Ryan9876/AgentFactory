@@ -23,6 +23,10 @@ AUTOMATE FIRST → TRY THE NEXT SUPPORTED PATH → EXHAUST REASONABLE OPTIONS �
 
 Before substantial architecture or implementation, record user outcome, native capability, simplest viable level (Use → Configure → Integrate → Automate → Extend → Build), demonstrated reason earlier levels fail, Microsoft architecture and implementation surface, security/data impact, buildability, runtime qualification plan, rollback/restoration plan, and stop/reassessment conditions. Tooling inconvenience alone never justifies added complexity.
 
+## Structured configuration before browser automation
+
+For agent construction/configuration, use the highest-priority supported structured surface for the operation: MCP → CLI → API/SDK → supported code/config editor → declarative/source or import/export representation → browser UI/automation. Existing native capability and the Use → Configure → Integrate → Automate → Extend → Build path still come first. Browser automation is a bounded fallback only after operation-specific evidence shows all higher-priority structured routes unavailable or insufficient. If a browser click is proposed while a structured route works or remains unverified, STOP → REASSESS → CHANGE PATH. An open/authenticated browser is not justification. Browser use remains valid for interactive authentication, MFA/consent, visual/runtime observation, and genuinely portal-only operations. See references/engineering-guardrails.md.
+
 ## Lessons-learned gate
 
 Before architecture selection, before any cloud mutation, and before final qualification, read `references/engineering-guardrails.md` and apply every rule relevant to the selected architecture and tool surface.

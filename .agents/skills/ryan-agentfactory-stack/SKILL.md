@@ -13,12 +13,13 @@ The original objective and approved AgentFactory requirements outrank every deri
 
 1. Inspect objective, supplied context, V2 constraints, lessons guardrails, and approved requirements. Use AgentFactory intake/spec/approval artifacts; do not create a duplicate Spec Kit specification system.
 2. Record path of least resistance: native capability, simplest viable Use → Configure → Integrate → Automate → Extend → Build level, demonstrated gap, architecture, security/data impact, buildability, runtime qualification, restoration, and stop conditions.
-3. Consult current Microsoft first-party documentation and the relevant Microsoft 365 platform specialist before committing to a mutable capability or implementation route.
-4. Plan implementation against every original requirement. Superpowers is a replaceable engineering layer: prefer its writing-plans, TDD, executing-plans, debugging, code-review, verification, and branch-finishing capabilities where useful. It does not govern product scope, and equivalent stronger AgentFactory gates avoid redundant ceremony.
-5. Execute safe work autonomously. Diagnose failures by layer; try supported CLI/MCP/API/SDK/browser/tool alternatives and continue independent work. Hand off only MFA/user presence, explicit consent/terms, admin/security approval, Production/publication approval, or a truly unsupported human-only operation after reasonable alternatives are exhausted.
-6. Independently converge implementation against original objective and approved requirements. Record gaps and evidence. Static tests are not runtime qualification.
-7. Qualify the actual selected target runtime when access permits; distinguish `DESIGNED`, `IMPLEMENTED`, `CLOUD_SYNCHRONIZED`, `RUNTIME_QUALIFIED`, `BLOCKED`, `FAILED`, `NOT_TESTED`, and `RESTORED`.
-8. Request fresh review, fix Critical/Important findings, rerun affected and full verification, and finish the feature branch without merging or pushing unless authorized.
+3. For agent construction/configuration, prefer the highest-priority supported structured/editor surface. Browser automation is fallback-only after operation-specific evidence excludes higher-priority routes; an open session is not justification. Stop and reassess if a browser click could be replaced.
+4. Consult current Microsoft first-party documentation and the relevant Microsoft 365 platform specialist before committing to a mutable capability or implementation route.
+5. Plan implementation against every original requirement. Superpowers is a replaceable engineering layer: prefer its writing-plans, TDD, executing-plans, debugging, code-review, verification, and branch-finishing capabilities where useful. It does not govern product scope, and equivalent stronger AgentFactory gates avoid redundant ceremony.
+6. Execute safe work autonomously. Diagnose failures by layer; try supported CLI/MCP/API/SDK/browser/tool alternatives and continue independent work. Hand off only MFA/user presence, explicit consent/terms, admin/security approval, Production/publication approval, or a truly unsupported human-only operation after reasonable alternatives are exhausted.
+7. Independently converge implementation against original objective and approved requirements. Record gaps and evidence. Static tests are not runtime qualification.
+8. Qualify the actual selected target runtime when access permits; distinguish `DESIGNED`, `IMPLEMENTED`, `CLOUD_SYNCHRONIZED`, `RUNTIME_QUALIFIED`, `BLOCKED`, `FAILED`, `NOT_TESTED`, and `RESTORED`.
+9. Request fresh review, fix Critical/Important findings, rerun affected and full verification, and finish the feature branch without merging or pushing unless authorized.
 
 ## Conditional design skills
 

@@ -45,6 +45,8 @@ class CapabilityRegistryTests(unittest.TestCase):
         routed = {capability for route in routing["routes"].values() for capability in route["capabilities"]}
         self.assertEqual(routed, set(data["capabilities"]))
         self.assertNotIn("/Users/", str(routing))
+        self.assertTrue(routing["browser_automation_gate"]["reject_if_structured_route_supported"])
+        self.assertFalse(routing["browser_automation_gate"]["session_already_open_is_justification"])
         self.assertEqual(routing["browser_surfaces"]["persistent_identity"]["profile_name"], "AgentFactory")
         blockers = routing["host_fallback"]["never_when_blocker"]
         self.assertIn("BLOCKED_BY_TENANT_OR_POLICY", blockers)

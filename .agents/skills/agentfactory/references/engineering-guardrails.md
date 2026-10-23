@@ -61,6 +61,16 @@ When automation and platform behavior disagree, use this diagnostic branch:
 
 A browser page is not authoritative cloud component state. Corroborate with supported cloud/PAC source, component identity, hashes, and runtime tests.
 
+## 3.1 Structured configuration before browser automation
+
+For every agent construction or configuration operation, AgentFactory MUST use the highest-priority supported deterministic surface capable of that exact operation: native capability, MCP, CLI, API/SDK, supported code/configuration editor, declarative/source representation, or import/export/package mechanism. This preserves Use → Configure → Integrate → Automate → Extend → Build and the registry's MCP → CLI → API/SDK preference while placing supported editors and structured source ahead of browser UI.
+
+Playwright, browser-use, Chrome automation, Computer Use, browser clicking, and UI field entry MUST NOT configure an operation that a supported structured/editor surface can perform. If browser automation is proposed while any such route is known to work, or its availability has not been checked, STOP → REASSESS → CHANGE PATH. “Easier to click” and “the browser is already open/authenticated” are not evidence.
+
+Browser automation is allowed only for the bounded operation after operation-specific evidence records that every higher-priority structured route is unavailable or insufficient and explains why. Localize a failed MCP/CLI/API/editor route, then check the remaining supported routes; one failure alone does not authorize browser fallback. Return adjacent configuration to structured surfaces immediately. Verify saved state through an authoritative supported surface when possible. Browser clicks and source edits alone do not establish RUNTIME_QUALIFIED.
+
+Keep browser authentication, MFA, consent, account selection, visual/runtime observation, and genuinely portal-only operations available when needed. Authentication can use Chrome while configuration continues through MCP/CLI/API/editor. Preserve the dedicated Chrome Stable AgentFactory identity profile and Chrome for Testing disposable regression profile split.
+
 ## 4. PAC and cloud synchronization rules
 
 PAC behavior can differ by execution host. Do not assume authentication/session persistence that works in the user's normal Terminal will work in a managed Codex host.

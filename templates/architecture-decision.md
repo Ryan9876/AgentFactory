@@ -12,6 +12,7 @@
 - Simplest viable path: `Use` | `Configure` | `Integrate` | `Automate` | `Extend` | `Build`
 - Native capability considered / demonstrated gap at earlier levels:
 - Security/data boundaries and implementation surface:
+- Configuration surface decision (highest-priority supported structured/editor route; browser fallback evidence if applicable):
 - Runtime qualification plan (source validation is not runtime qualification):
 - Rollback/restoration plan (when applicable):
 - Stop/reassessment conditions:

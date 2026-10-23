@@ -70,6 +70,7 @@ class ArtifactContractTests(unittest.TestCase):
                 "requirement ids",
                 "owning capability",
                 "provider",
+                "configuration surface and rejected-route evidence",
                 "output artifact",
                 "status",
                 "implementation evidence",
@@ -78,7 +79,7 @@ class ArtifactContractTests(unittest.TestCase):
             ],
         )
         manifest = (TEMPLATES / "build-manifest.md").read_text()
-        for required in ("Task ID", "Dependencies", "Requirement IDs", "Owning capability", "Status", "Implementation evidence"):
+        for required in ("Task ID", "Dependencies", "Requirement IDs", "Owning capability", "Configuration surface", "Status", "Implementation evidence"):
             self.assertIn(required, manifest)
 
     def test_agent_spec_template_has_required_contract_sections(self):

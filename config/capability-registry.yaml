@@ -276,7 +276,24 @@ execution_routing:
       role: reproducible_repository_engineering_and_public_research
     desktop_local:
       role: authenticated_microsoft_tenant_execution
-  surface_preference: [mcp, cli, api_sdk, supported_browser_ui, human_action]
+  surface_preference: [mcp, cli, api_sdk, supported_editor_config, declarative_source, import_export, supported_browser_ui, browser_automation, human_action]
+  configuration_surface_rule: "For agent construction/configuration, use the highest-priority operation-specific supported structured surface. Browser UI/automation requires evidence that every higher-priority route is unavailable or insufficient. Unknown availability stops for reassessment."
+  configuration_capabilities:
+    - copilot_studio.standard.author
+    - copilot_studio.standard.manage
+    - declarative_agent.create
+    - declarative_agent.provision
+    - agents_toolkit.custom_app_upload
+    - power_automate.flow.build
+    - power_automate.flow.edit
+    - dataverse.solution
+    - power_platform.solution.alm
+  browser_automation_gate:
+    requires_operation_specific_evidence: true
+    reject_if_structured_route_supported: true
+    reject_if_higher_route_unverified: true
+    session_already_open_is_justification: false
+    click_evidence_is_runtime_qualification: false
   host_fallback:
     when: preferred_host_capability_unavailable
     require_fallback_capability_support: true

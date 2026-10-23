@@ -63,7 +63,7 @@ class HostRoutingTests(unittest.TestCase):
         self.assertEqual(route["host"], "desktop_local")
 
     def test_implementation_surface_order_prefers_mcp_cli_then_api_before_browser(self):
-        self.assertEqual(REGISTRY["execution_routing"]["surface_preference"], ["mcp", "cli", "api_sdk", "supported_browser_ui", "human_action"])
+        self.assertEqual(REGISTRY["execution_routing"]["surface_preference"], ["mcp", "cli", "api_sdk", "supported_editor_config", "declarative_source", "import_export", "supported_browser_ui", "browser_automation", "human_action"])
 
     def test_unknown_capability_has_no_automatic_fallback(self):
         route = choose_execution_route(REGISTRY, "unknown.capability", {"desktop_local", "codex_cloud"})

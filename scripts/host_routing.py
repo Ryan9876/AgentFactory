@@ -2,6 +2,8 @@
 
 from collections.abc import Iterable, Mapping
 
+from scripts.surface_routing import choose_implementation_surface
+
 EVIDENCE_STATES = {
     "DESIGNED", "IMPLEMENTED", "CLOUD_SYNCHRONIZED", "RUNTIME_QUALIFIED",
     "BLOCKED", "FAILED", "NOT_TESTED", "USER_PRESENCE_REQUIRED", "ADMIN_REQUIRED",
@@ -25,8 +27,10 @@ def choose_execution_route(
     human_presence_required: bool = False,
     admin_required: bool = False,
     evidence: str = "NOT_TESTED",
+    proposed_surface: str | None = None,
+    surface_assessments: Mapping[str, Mapping] | None = None,
 ) -> dict[str, str | None]:
-    """Choose a supported host, stopping before policy or human boundaries."""
+    """Choose a supported host and enforce the surface gate for configuration tasks."""
     hosts = set(available_hosts)
     route = _route_for_capability(registry, capability_id)
     if route is None:
@@ -42,7 +46,27 @@ def choose_execution_route(
     if blocker:
         status = blocker if blocker in EVIDENCE_STATES | {"BLOCKED_BY_TENANT_OR_POLICY"} else "BLOCKED"
         if blocker in no_hop or not preferred_host_failed:
-            return {"status": status, "host": None, "blocker": blocker, "reason": f"existing {blocker} blocker; host fallback prohibited"}
+            return {
+                "status": status, "host": None, "blocker": blocker,
+                "reason": f"existing {blocker} blocker; host fallback prohibited",
+            }
+
+    selected_surface = None
+    selected_surface_decision = None
+    config_capabilities = routing.get("configuration_capabilities", [])
+    if capability_id in config_capabilities or proposed_surface is not None or surface_assessments is not None:
+        surface = choose_implementation_surface(
+            registry, surface_assessments or {}, proposed_surface=proposed_surface
+        )
+        if surface["status"] != "ROUTED":
+            return {
+                "status": surface["status"],
+                "host": None,
+                "reason": surface["reason"],
+                "preferred_surface": surface.get("preferred_surface"),
+            }
+        selected_surface = surface.get("surface")
+        selected_surface_decision = surface
 
     preference = route.get("host_preference_order")
     if preference is None:
@@ -51,11 +75,19 @@ def choose_execution_route(
         preference = [host for host in preference if host != route.get("preferred_host")]
     for host in preference:
         if host and (host == "either" or host in hosts):
-            selected = next((candidate for candidate in route.get("host_preference_order", hosts) if candidate in hosts), None) if host == "either" else host
+            selected = (
+                next((candidate for candidate in route.get("host_preference_order", hosts) if candidate in hosts), None)
+                if host == "either" else host
+            )
             return {
                 "status": "ROUTED",
                 "host": selected,
                 "reason": "preferred supported host" if selected == route.get("preferred_host") else "next supported host",
                 "evidence_state": evidence if evidence in EVIDENCE_STATES else "NOT_TESTED",
+                "surface": selected_surface,
+                "surface_decision_reason": (
+                    selected_surface_decision.get("reason") if selected_surface_decision else None
+                ),
+                "surface_assessments": dict(surface_assessments or {}) if selected_surface_decision else None,
             }
     return {"status": "BLOCKED", "host": None, "reason": "no supported execution host is available"}

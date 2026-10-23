@@ -32,7 +32,7 @@ The Factory does not implement an agent runtime, Copilot Studio schema, Power Au
 
 Use Microsoft capabilities for platform operations wherever they exist. The capability registry records capability family, purpose, availability, host, version/compatibility evidence, and fallback or blocking behavior without binding the control plane to a particular evolving command. Route only relevant requirements to the responsible capability.
 
-Choose the MCP, CLI, API/SDK, supported browser UI, or human-action surface according to capability support, with MCP/CLI preferred when they expose the operation. Browser access supplies identity, session verification, and a supported fallback; it does not replace reliable platform interfaces. See `docs/supported-platforms.md` for the Cloud/Local and Chrome surface split.
+For agent configuration, choose the highest-priority supported operation-specific surface: MCP, CLI, API/SDK, supported code/config editor, declarative/source or import/export, then browser UI/automation. Browser automation is rejected whenever a structured route works or remains unverified; fallback requires recorded evidence and a bounded reason. Browser interaction remains valid for identity, MFA/consent, visual/runtime observation, and portal-only operations. It does not replace reliable platform interfaces. See `docs/supported-platforms.md` for the Cloud/Local and Chrome surface split.
 
 ## Architecture rules
 

@@ -12,9 +12,11 @@ Use the deterministic API in `../../../../scripts/build_state.py` for approval d
 
 ## Route each manifest task
 
+For each agent configuration operation, record operation-specific support/evidence for candidate implementation surfaces. Pass proposed_surface and surface_assessments to scripts.host_routing.choose_execution_route; it enforces scripts.surface_routing.choose_implementation_surface with the registry preference order before routing configuration hosts. A proposed browser UI/automation route is rejected with STOP_REASSESS when any higher-priority structured surface is supported or unverified. Browser fallback requires evidence that all higher-priority routes are unavailable or insufficient and a bounded reason. After that operation, route adjacent configuration back through the highest-priority supported structured surface. Authentication, tenant permissions, security, licensing, MFA/consent, and admin/approval blockers remain authoritative and cannot be bypassed by changing surfaces.
+
 - Select the smallest capability that owns the platform operation; Microsoft capabilities own authoring, flow/data work, evaluation, validation, and ALM.
 - Pass only the task's input/output, relevant requirement IDs, approved context, dependencies, and existing artifact evidence. Do not pass unrelated project context.
-- Resolve the stable ID through `capability-registry.json` and current provider evidence. Keep provider/tool details out of requirement IDs and architecture intent.
+- Resolve the stable ID through `config/capability-registry.yaml` and current provider evidence. Keep provider/tool details out of requirement IDs and architecture intent.
 - Record provider selection, evidence status, prerequisites, output artifact, implementation evidence, and status in the manifest and traceability record.
 - Mark implementation `COMPLETE` only with inspectable artifact and implementation evidence; mark it `VERIFIED` only after verification evidence is recorded.
 - If an unknown capability intent is requested, or a required provider is unavailable, mark only the dependent task `BLOCKED`, record the concrete reason and owner, and continue independent tasks where safe. Do not silently fall back or fabricate a provider. Revisit architecture only through an explicit documented decision.
