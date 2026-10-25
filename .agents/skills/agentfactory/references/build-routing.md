@@ -5,6 +5,7 @@
 1. Confirm the user-selected target; Development is the default. Do not infer an environment from a saved profile.
 2. Verify the approved spec SHA-256 before initial build or resume. A mismatch sets `SPEC_CHANGED` and blocks work until explicit reapproval.
 3. Load/check only capabilities required by the approved architecture, using current registry evidence and the target environment's prerequisites.
+   - Apply `environment_constraints.capability_availability` before generating implementation tasks. Eliminate candidates requiring known unavailable entitlements and select the first viable supported architecture within current authority. Record `CAPABILITY_UNAVAILABLE_CURRENT_ENVIRONMENT` if none remains.
 4. Resolve each capability through `scripts/host_routing.py` and `execution_routing.routes` in `config/capability-registry.yaml`. Use the preferred host, then an explicitly supported alternate host only for a host/tool-surface outage, then another supported platform surface, then a human handoff if intrinsically required.
 5. Generate dependency-ordered manifest tasks mapped to stable capability intents and only relevant requirement IDs.
 
@@ -25,7 +26,7 @@ For each agent configuration operation, record operation-specific support/eviden
 
 See `capability-routes.csv` for task patterns, capability intent, relevant requirement IDs, focused context, and unavailable behavior. The matrix covers Copilot Studio authoring/testing, Power Automate, Dataverse, evaluation, and solution ALM. The execution-host mapping is in `config/capability-registry.yaml`; routing is guidance, not proof that an operation is authorized or available in the selected environment.
 
-Never host-hop to work around authentication/MFA, consent, missing permissions, tenant/admin/security policy, licensing, billing, Production approval, or publication approval. Preserve the blocker as `BLOCKED_BY_TENANT_OR_POLICY` or the existing evidence state. `USER_PRESENCE_REQUIRED` and `ADMIN_REQUIRED` stop at their respective authority boundary.
+Never host-hop or switch to browser automation to work around authentication/MFA, consent, missing permissions, tenant/admin/security policy, licensing, billing, Production approval, or publication approval. Preserve the blocker as `BLOCKED_BY_TENANT_OR_POLICY` or `FIXED_ENVIRONMENT_CONSTRAINT`; do not recommend seeking more authority or spend. `USER_PRESENCE_REQUIRED` stops at its human boundary. `ADMIN_REQUIRED` is recorded as a fixed design constraint for this program, then alternative architectures are evaluated. Continue independent tasks and labs.
 
 For PAC MCP, authenticate PAC first, then start or restart the MCP process to avoid stale profile state. For every fresh Copilot Studio MCP process, verify account and Development environment, then refresh the online schema/tool catalog. Keep process-local credentials opaque. Tool discovery is not runtime qualification.
 

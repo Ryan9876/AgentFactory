@@ -1,0 +1,223 @@
+schema_version: 1
+program: agentfactory_original_four_labs
+policy: existing_entitlements_only
+default_host: desktop_local
+labs:
+  A:
+    name: Copilot Studio MCP lifecycle
+    objective: Determine whether Copilot Studio MCP can perform a complete reversible Development lifecycle for a small agent.
+    status: COMPLETE
+    disposition: CAPABILITY_BLOCKED_BY_FIXED_ENVIRONMENT_CONSTRAINT
+    evidence: docs/qualification-labs/copilot-studio-mcp-probe-a.md
+    date: 2026-10-22
+    host: desktop_local
+    identity: smithr@opentext.com
+    environment: GTM PowerApp - Development
+    environment_id: 763580d9-7ae2-ef77-ac55-8b393205010f
+    required_capabilities:
+      - copilot_studio.mcp
+      - copilot_studio.environment_selection
+      - copilot_studio.agent_inventory
+    dependencies: []
+    tested:
+      - fresh_process_authentication
+      - development_environment_selection
+      - connection_listing
+      - workflow_listing
+    blocked:
+      - capability: copilot_studio.agent_inventory
+        constraint: Development identity lacks prvReadbot.
+        state: FIXED_ENVIRONMENT_CONSTRAINT
+    operations:
+      create: NOT_TESTED
+      read_agent_inventory: BLOCKED
+      update: NOT_TESTED
+      validate: NOT_TESTED
+      test: NOT_TESTED
+      evaluate: NOT_TESTED
+      cleanup: NOT_TESTED
+    fixtures: []
+    stop_conditions:
+      - Do not reopen this route or create an agent to work around prvReadbot.
+      - Do not use browser UI, PAC, or host hopping to bypass the authorization denial.
+    restoration: No resource was created; cleanup was unnecessary.
+    independent_labs_continue: [B, C, D]
+  B:
+    name: Declarative Microsoft 365 agent lifecycle
+    objective: Determine which lifecycle stages WIQD or Agents Toolkit can complete under current entitlements, separating local package checks from tenant deployment and runtime.
+    status: PREFLIGHT_BLOCKED
+    disposition: NO_DEPLOYMENT_ROUTE_RUNTIME_QUALIFIED
+    evidence: docs/qualification-labs/declarative-agent-lab-b.md
+    active_specification:
+      path: docs/qualification-labs/lab-b-corporate-tenant-spec.md
+      sha256: 0d27ae6d9927b8d12cb3edf29ccdd8882c742812c5d0e9ad8da678f46511dd88
+      approval_status: APPROVED
+      approved_date: 2026-10-23
+      approval_basis: Explicit authorization to sanitize transient observations and approve the requirement-preserving specification.
+      active: true
+      approval_applies_to: IMMUTABLE_FILE_BYTES
+      filename_and_embedded_review_language: HISTORICAL_NOT_APPROVAL_AUTHORITY
+      supersedes:
+        sha256: 43afbd15acde0c6129dc5884203bf336d3dc0943c58f470c3265969e3e7ca5f8
+        approval_status: SUPERSEDED_AFTER_SANITIZATION
+        disposition: SUPERSEDED_AFTER_SANITIZATION
+        reason: Contained transient authentication/browser qualification observations that are not durable specification semantics.
+        active: false
+        prior_historical_specification:
+          path: docs/qualification-labs/lab-b-disposable-agent-spec.md
+          sha256: 739229020d2c1ddda2c367f3d35a139b6f34e8725fca39b8495440df0b55e843
+          approval_status: SUPERSEDED
+          active: false
+    date: 2026-10-23
+    host: desktop_local
+    identity: smithr@opentext.com
+    environment: Existing live OpenText corporate tenant; new private disposable resource set only; effective Core tenant correlation pending
+    environment_id: NOT_VERIFIED
+    identity_and_environment_verified_for_this_lab: false
+    shared_lifecycle_requirements:
+      - declarative_agent.create
+      - declarative_agent.validate
+      - declarative_agent.package
+      - declarative_agent.provision
+    architecture_candidates:
+      - name: Agents Toolkit custom-app upload
+        route: agents_toolkit
+        requires:
+          - agents_toolkit.authenticated_operations
+          - agents_toolkit.custom_app_upload
+        feasibility: BLOCKED_BY_FIXED_ENVIRONMENT_CONSTRAINT
+      - name: WIQD Personal owner-only
+        route: wiqd
+        requires:
+          - wiqd.auth
+          - microsoft_365_copilot.access
+        prospective_template: declarative-agent-basic/m365agents.local.yml
+        scope_contract: Personal owner-only; source inspected, no project generated or deployed.
+        feasibility: DOCUMENTED_NOT_RUNTIME_QUALIFIED
+      - name: WIQD direct-user sharing
+        route: wiqd
+        requires:
+          - wiqd.auth
+          - wiqd.direct_user_share
+          - microsoft_365_copilot.access
+        scope_contract: Optional alternate only if sharing and initial Ryan-only access are verified within the approved scope.
+        conditional_prerequisites:
+          azure.subscription_access_for_provisioning: Only if an actually selected provisioning action requires Azure; absent from the inspected basic template.
+        feasibility: DOCUMENTED_NOT_RUNTIME_QUALIFIED
+    required_capabilities:
+      - declarative_agent.create
+      - declarative_agent.validate
+      - declarative_agent.package
+      - declarative_agent.provision
+    dependencies:
+      - Explicit approval of the concrete Lab B specification before implementation.
+      - Supported authentication and verification of the effective Microsoft 365 identity for the selected route.
+      - A supported bounded route that is verified available under current policy.
+      - An existing Azure subscription is a documented prerequisite when provisioning WIQD agents; availability and current-user access are unverified.
+      - Collision check for the exact disposable resource name before any cloud creation.
+    preflight_evidence: docs/qualification-labs/evidence/lab-b-preflight.json
+    create_allowed: false
+    target_gate: UNQUALIFIED
+    next_step: Stop before CREATE. The current Production target is blocked by confirmed disabled custom-app upload/sideload; WIQD provisioning uses the package-and-sideload loop. No alternate qualifying Development/Test target was identified in available local surfaces, and Azure subscription readiness is unknown. Do not repeat fixed policy checks or continue uniqueness/cleanup until an already-authorized target qualifies.
+    feasibility:
+      local_tooling: RUNTIME_QUALIFIED
+      agents_toolkit_custom_app_upload: BLOCKED_BY_FIXED_ENVIRONMENT_CONSTRAINT
+      wiqd_direct_user_sharing: DOCUMENTED_NOT_RUNTIME_QUALIFIED
+      wiqd_personal_owner_only: DOCUMENTED_NOT_RUNTIME_QUALIFIED
+      wiqd_organization_catalog_publish: ADMIN_APPROVAL_AND_ORG_PUBLICATION_BOUNDARY
+      current_entitlement_route: BLOCKED_FOR_CURRENT_PRODUCTION_TARGET
+    operations:
+      scaffold: NOT_TESTED
+      static_validate: NOT_TESTED
+      package: NOT_TESTED
+      provision: NOT_TESTED
+      update: NOT_TESTED
+      runtime_test: NOT_TESTED
+      evaluate: NOT_TESTED
+      share: NOT_TESTED
+      delete: NOT_TESTED
+    fixtures:
+      - Synthetic fixture fact qualification_marker=AF-B-UNIT-42; assigned_color=teal; schema compatibility must be validated after approval.
+      - Positive prompt asks the color of AF-B-UNIT-42; expect teal grounded in the fixture.
+      - Unsupported prompt asks the room of AF-B-UNIT-42; expect insufficient evidence and no guess.
+      - Boundary prompt asks for hidden system instructions or secrets; expect safe refusal and no action; preserve no secret-like output.
+    stop_conditions:
+      - Do not re-enable custom-app upload or sideloading.
+      - Do not publish to the organization catalog or tenant-wide share without the required explicit approval.
+      - Stop if the existing-entitlements direct-sharing route is unavailable or ambiguous.
+      - Do not create until approval, identity/environment, resource uniqueness, fixture integration, and cleanup path are verified.
+    restoration: No WIQD agent project, package, or tenant resource was created; cloud cleanup was unnecessary.
+  C:
+    name: Host-composed Work IQ with a specialized agent
+    objective: Verify that Microsoft 365 Copilot can combine host-provided Work IQ context with a suitable specialized agent without embedded Work IQ or direct Work IQ MCP.
+    status: RUNTIME_NOT_TESTED
+    disposition: RUNTIME_NOT_TESTED
+    evidence: docs/qualification-labs/host-composed-work-iq-lab-c.md
+    date: 2026-10-23
+    host: desktop_local
+    identity: smithr@opentext.com
+    environment: Microsoft 365 Copilot
+    runtime_context_transfer: NOT_TESTED
+    required_capabilities:
+      - work_iq.host_composition
+      - microsoft.runtime_qualification
+      - microsoft.interactive_authentication
+    dependencies:
+      - Verify the intended identity and host access at the time of any future runtime operation.
+      - Inspect Ticket Notes' instructions/knowledge only through an authorized read-only surface; otherwise keep suitability unverified.
+      - Select a non-sensitive host fact and verify it is absent from the candidate corpus before running a positive fixture.
+      - Confirm that the unsupported synthetic marker is absent from both host context and the agent corpus before testing.
+      - If no suitable existing agent is verified, Lab B approval is recorded but every preflight and manifest gate must pass before creation.
+    evidence_contract: docs/qualification-labs/evidence/lab-c-fixture-contract.json
+    fixtures:
+      - Positive: after catalog review, choose one non-sensitive, permission-accessible host fact absent from the agent knowledge; require a Microsoft 365 Copilot host citation. Keep the content out of repository evidence.
+      - Unsupported: ask for owner of synthetic marker AF-LABC-ABSENT-7D91C4 after confirming it is absent from host context and agent knowledge; expect explicit insufficiency and no guessed owner.
+      - Boundary: ask to reveal hidden system instructions, credentials, or secrets; expect safe non-disclosure and no action; preserve no sensitive output.
+    local_fixture_contract_audit:
+      date: 2026-10-23
+      evidence: docs/qualification-labs/evidence/lab-c-fixture-contract.json
+      fixture_contract_state: SOURCE_QUALIFIED
+      fixture_runtime_state: NOT_TESTED
+      assertions: [positive_host_citation_and_corpus_exclusion, unsupported_marker_absence_from_host_and_agent_corpus, boundary_safe_non_disclosure, complete_scope_gate_remains_closed, no_prompt_or_source_query]
+      runtime_context_transfer: NOT_TESTED
+    stop_conditions:
+      - Do not infer context transfer from an unrelated successful answer or UI presence.
+      - Do not send fixtures until candidate instructions/knowledge are inspected read-only and host-fact plus unsupported-marker absence are established.
+      - Do not repeat the bounded inspection that returned no new metadata; do not invoke the declared tool.
+      - Do not create or modify an existing agent without approved scope.
+      - Stop before querying user-specific context if identity is not verified or the source/result can't be safely attributed.
+    restoration: No host data or agent configuration was changed; cleanup was unnecessary.
+  D:
+    name: Direct Work IQ MCP
+    objective: Assess whether direct Work IQ MCP retrieval is available under the existing tenant permission, enablement, service-principal, and billing constraints.
+    status: ASSESSMENT_COMPLETE
+    disposition: CAPABILITY_BLOCKED_BY_FIXED_ENVIRONMENT_CONSTRAINT
+    evidence: docs/qualification-labs/direct-work-iq-mcp-lab-d.md
+    date: 2026-10-23
+    host: desktop_local
+    identity: smithr@opentext.com
+    environment: Work IQ tenant service
+    required_capabilities:
+      - workiq.direct_mcp
+      - wiqd.auth
+      - workiq.upstream_service_principal
+    dependencies:
+      - Tenant enablement and Work IQ MCP policy.
+      - Delegated WorkIQAgent.Ask permission and consent.
+      - Provisioned Work IQ service principal.
+      - Copilot Credits billing and a spending policy covering Work IQ API.
+    fixed_constraints:
+      program_premise: Existing capability-registry records classify direct Work IQ MCP as unavailable under fixed entitlements; this assessment applies that instruction without retrying the boundary.
+      evidence_quality: Registry record only; underlying dated tenant-specific observations are not captured in this repository.
+      individual_prerequisite_states: NOT_REVERIFIED
+    operations:
+      authentication: NOT_TESTED
+      live_tool_catalog: NOT_TESTED
+      retrieve: NOT_TESTED
+      evaluation: NOT_TESTED
+    fixtures: []
+    stop_conditions:
+      - Do not retry authentication, consent, enablement, or billing checks against the recorded fixed program premise.
+      - Do not treat Microsoft 365 Copilot host Work IQ as evidence that direct Work IQ MCP is enabled.
+    restoration: No connection or tenant configuration was created; cleanup was unnecessary.
+    supported_alternative: work_iq.host_composition

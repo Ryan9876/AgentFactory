@@ -34,6 +34,8 @@ Use Microsoft capabilities for platform operations wherever they exist. The capa
 
 For agent configuration, choose the highest-priority supported operation-specific surface: MCP, CLI, API/SDK, supported code/config editor, declarative/source or import/export, then browser UI/automation. Browser automation is rejected whenever a structured route works or remains unverified; fallback requires recorded evidence and a bounded reason. Browser interaction remains valid for identity, MFA/consent, visual/runtime observation, and portal-only operations. It does not replace reliable platform interfaces. See `docs/supported-platforms.md` for the Cloud/Local and Chrome surface split.
 
+Apply the existing-entitlements-only constraint before committing to architecture. Compare candidate requirements with `environment_constraints.capability_availability` in `config/capability-registry.yaml`; use `scripts.config_loader.evaluate_architecture_candidates` in least-complex-first order. Reject candidates that depend on fixed unavailable privileges, licenses, credits, consent, policy, sideloading, billing, service principals, or Production access. Select a viable route within current authority, or record `CAPABILITY_UNAVAILABLE_CURRENT_ENVIRONMENT`. Never remediate by recommending increased access or spend. Reevaluate the map only after Ryan explicitly states that the premise changed.
+
 ## Architecture rules
 
 - Default to Standard Copilot Studio. Consider the newer GHCP-style harness only when explicitly requested or when it gives a material advantage and tooling maturity/compatibility is acceptable; record the decision.

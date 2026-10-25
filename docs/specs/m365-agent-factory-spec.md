@@ -101,7 +101,7 @@ SPEC_CHANGED
 - **REQ-025 (mandatory):** Apply and document identity/authentication, least privilege, and user-context versus service-context decisions.
 - **REQ-026 (mandatory):** Define consequential side effects and confirmation requirements before execution.
 - **REQ-027 (mandatory):** Define retries, retry safety, idempotency, duplicate prevention, partial failure, compensation/recovery, timeouts, and unavailable-dependency behavior where applicable.
-- **REQ-028 (mandatory):** Define missing-permission behavior, user-facing errors, escalation, and safe stop behavior.
+- **REQ-028 (mandatory):** Define missing-permission behavior, user-facing errors, in-entitlement alternatives, and safe stop behavior. Do not recommend requesting elevated access or changing tenant policy under the existing-entitlements-only program rule.
 - **REQ-029 (mandatory):** Define connection references, environment variables, secret handling, logging/correlation, and observable DLP/policy dependencies where applicable.
 
 ### Evaluation and verification

@@ -15,6 +15,7 @@ For each component category:
 3. Record the choice and why it meets the requirement. Record a reason for `Not required` or `None selected` too.
 4. Mark capability evidence `verified`, `available`, `not_required`, `not_yet_verified`, or `blocked`. Use `verified` only after a concrete check in the relevant host/environment. State what remains to be checked.
 5. Record consequential alternatives and blockers; do not turn unknown live-system facts into architecture assumptions.
+6. Before choosing or implementing an architecture, compare required capabilities with `environment_constraints.capability_availability` in `config/capability-registry.yaml`. Use `scripts.config_loader.evaluate_architecture_candidates` with candidates ordered least-complex-first. Reject candidates requiring known unavailable entitlements, then choose the first viable supported alternative. If all candidates require unavailable capabilities, record `CAPABILITY_UNAVAILABLE_CURRENT_ENVIRONMENT` and design without them. An unverified prerequisite stays unqualified; do not assume availability or ask for more access. Include a capability ID in `confirmed_changed_capabilities` only after Ryan explicitly confirms that specific entitlement or policy changed; otherwise a fixed entry marked available fails closed pending confirmation.
 
 ## Harness
 
@@ -50,4 +51,4 @@ native Copilot Studio capability
 
 ## Record and continue
 
-Use `templates/architecture-decision.md`. Once consequential choices are resolved or explicitly accepted as documented assumptions, set the architecture disposition to `DECIDED` or `DECIDED_WITH_UNRESOLVED_DEPENDENCIES` as appropriate. Do not move to specification until the required architecture choices are recorded. Dependencies that can be safely verified during preflight remain explicit and must be resolved before affected implementation begins.
+Use `templates/architecture-decision.md`. Once consequential choices are resolved or explicitly accepted as documented assumptions, set the architecture disposition to `DECIDED` or `DECIDED_WITH_UNRESOLVED_DEPENDENCIES` as appropriate. Do not move to specification until the required architecture choices are recorded. Dependencies that can be safely verified during preflight remain explicit and must be resolved before affected implementation begins. Treat permissions, roles, licenses, credits, billing, tenant policy, admin consent, service principals, sideloading, and Production access as existing-entitlement constraints. Never choose an architecture on the assumption Ryan will obtain more authority or spend. Reevaluate a fixed constraint only after Ryan explicitly says it changed. A tenant authorization denial is not evidence that a browser or another host can bypass it.

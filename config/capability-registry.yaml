@@ -21,6 +21,9 @@ capabilities:
   - declarative_agent.validate
   - declarative_agent.provision
   - declarative_agent.package
+  - wiqd.direct_user_share
+  - microsoft_365_copilot.access
+  - azure.subscription_access_for_provisioning
   - power_platform.pac_mcp
   - repository.engineering
   - repository.source_implementation
@@ -69,16 +72,16 @@ providers:
     organization_policy_status: allowed
     licensing_status: not_yet_verified
     codex_cloud_tool_status: not_yet_verified
-    authentication_status: not_yet_verified
+    authentication_status: transient_state_not_persisted
     tenant_execution_status: not_yet_verified
     cloud_synchronization_status: not_tested
     runtime_qualification_status: not_tested
     user_presence_required: not_yet_verified
     admin_required: not_yet_verified
     tool_host_block: false
-    last_verified_at: null
-    evidence: []
-    limitations: ["Fresh Codex Cloud host not yet bootstrapped"]
+    last_verified_at: 2026-10-23
+    evidence: ["docs/qualification-labs/declarative-agent-lab-b.md", "https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/declarative-agent-tool-comparison"]
+    limitations: ["Execution-context authentication observations are transient and not persisted. Work IQ/Eval auth, target, Azure provisioning access, share eligibility, and all agent lifecycle operations remain unverified or untested"]
     fallback: agents_toolkit
   agents_toolkit:
     microsoft_support_status: documented
@@ -145,8 +148,8 @@ providers:
     admin_required: false
     tool_host_block: false
     last_verified_at: null
-    evidence: ["Approved V2 design: host composition with Microsoft 365 Copilot context"]
-    limitations: ["Depends on supported host composition for selected agent experience"]
+    evidence: ["Approved V2 design: host composition with Microsoft 365 Copilot context", "docs/qualification-labs/host-composed-work-iq-lab-c.md"]
+    limitations: ["Platform pattern is documented, but this tenant's host context transfer is not runtime-qualified; requires signed-in Microsoft 365 Copilot and a suitable specialized agent"]
     fallback: agent_without_embedded_work_iq
   standard_copilot_studio:
     microsoft_support_status: documented
@@ -268,6 +271,123 @@ providers:
     limitations: ["Must not be selected"]
     fallback: declarative_agent_or_standard_copilot_studio
 
+# Platform support and current-environment availability are separate facts.
+# New evidence may qualify alternative routes, but a fixed constraint may only
+# be cleared after Ryan explicitly confirms that the entitlement premise changed.
+environment_constraints:
+  policy: existing_entitlements_only
+  reevaluate_only_after_explicit_user_change: true
+  capability_availability:
+    declarative_agent.create:
+      platform_capability: documented
+      environment_availability: unverified
+      classification: UNVERIFIED
+      evidence_state: NOT_TESTED
+      blocker: No Lab B create operation has been executed; read-only route preflight is blocked on recorded verification gaps.
+      evidence: docs/qualification-labs/declarative-agent-lab-b.md
+    declarative_agent.validate:
+      platform_capability: documented
+      environment_availability: unverified
+      classification: UNVERIFIED
+      evidence_state: NOT_TESTED
+      blocker: No Lab B project has been validated.
+      evidence: docs/qualification-labs/declarative-agent-lab-b.md
+    declarative_agent.package:
+      platform_capability: documented
+      environment_availability: unverified
+      classification: UNVERIFIED
+      evidence_state: NOT_TESTED
+      blocker: No Lab B project has been packaged.
+      evidence: docs/qualification-labs/declarative-agent-lab-b.md
+    declarative_agent.provision:
+      platform_capability: documented
+      environment_availability: unverified
+      classification: UNVERIFIED
+      evidence_state: NOT_TESTED
+      blocker: No Lab B deployment route or target has been verified.
+      evidence: docs/qualification-labs/declarative-agent-lab-b.md
+    agents_toolkit.authenticated_operations:
+      platform_capability: documented
+      environment_availability: unverified
+      classification: UNVERIFIED
+      evidence_state: NOT_TESTED
+      blocker: The expected account was absent from the local Agents Toolkit connected-account list.
+      evidence: docs/qualification-labs/declarative-agent-lab-b.md
+    wiqd.auth:
+      platform_capability: documented
+      environment_availability: unverified
+      classification: UNVERIFIED
+      evidence_state: TRANSIENT_AUTH_STATE_NOT_PERSISTED
+      blocker: No durable authentication assertion is retained; no agent lifecycle operation has been tested.
+      evidence: docs/qualification-labs/declarative-agent-lab-b.md
+    wiqd.direct_user_share:
+      platform_capability: documented
+      environment_availability: unverified
+      classification: UNVERIFIED
+      evidence_state: NOT_TESTED
+      blocker: Microsoft documents direct-user sharing, but account-specific eligibility has not been tested.
+      evidence: docs/qualification-labs/declarative-agent-lab-b.md
+    microsoft_365_copilot.access:
+      platform_capability: documented
+      environment_availability: unverified
+      classification: UNVERIFIED
+      evidence_state: TRANSIENT_BROWSER_SESSION_NOT_PERSISTED
+      blocker: No durable browser-session assertion is retained.
+      evidence: docs/qualification-labs/declarative-agent-lab-b.md
+    azure.subscription_access_for_provisioning:
+      platform_capability: documented
+      environment_availability: unverified
+      classification: UNVERIFIED
+      evidence_state: NOT_TESTED
+      blocker: Azure subscription access for the selected provision operation has not been verified.
+      evidence: docs/qualification-labs/declarative-agent-lab-b.md
+    copilot_studio.agent_inventory:
+      platform_capability: documented
+      environment_availability: unavailable
+      classification: FIXED_ENVIRONMENT_CONSTRAINT
+      evidence_state: BLOCKED
+      blocker: Development identity lacks prvReadbot; additional privilege is outside this program.
+      evidence: docs/qualification-labs/copilot-studio-mcp-probe-a.md
+    agents_toolkit.custom_app_upload:
+      platform_capability: documented
+      environment_availability: unavailable
+      classification: FIXED_ENVIRONMENT_CONSTRAINT
+      evidence_state: BLOCKED
+      blocker: Custom-app upload and sideloading are disabled for the current account; policy enablement is outside this program.
+      evidence: docs/supported-platforms.md
+    workiq.upstream_service_principal:
+      platform_capability: documented
+      environment_availability: unavailable
+      classification: FIXED_ENVIRONMENT_CONSTRAINT
+      evidence_state: BLOCKED
+      blocker: Required Work IQ service principal is missing and administrator creation or consent is outside this program.
+      evidence: docs/supported-platforms.md
+    workiq.direct_mcp:
+      platform_capability: supported_preview
+      environment_availability: unavailable
+      classification: FIXED_ENVIRONMENT_CONSTRAINT
+      evidence_state: NOT_TESTED
+      blocker: Tenant, permission, service-principal, enablement, and billing/Copilot Credit prerequisites are not available under the current program premise.
+      evidence: docs/supported-platforms.md
+    github_copilot_harness:
+      platform_capability: documented
+      environment_availability: unavailable
+      classification: FIXED_ENVIRONMENT_CONSTRAINT
+      evidence_state: BLOCKED
+      blocker: Required GitHub Copilot/Copilot Credits are unavailable to this program.
+      evidence: config/constraints.yaml
+    work_iq.host_composition:
+      platform_capability: documented
+      environment_availability: available
+      classification: CURRENT_ENVIRONMENT_AVAILABLE
+      evidence_state: available
+      blocker: null
+  qualification:
+    fixed_environment_constraint_result: CAPABILITY_BLOCKED_BY_FIXED_ENVIRONMENT_CONSTRAINT
+    counts_as_completed_lab: true
+    continue_independent_labs: true
+    block_later_lab_only_when_technically_dependent: true
+
 # Host selection belongs to the capability catalog; evidence and routing remain separate.
 execution_routing:
   schema_version: 1
@@ -297,7 +417,7 @@ execution_routing:
   host_fallback:
     when: preferred_host_capability_unavailable
     require_fallback_capability_support: true
-    never_when_blocker: [BLOCKED_BY_TENANT_OR_POLICY, AUTH, USER_PRESENCE_REQUIRED, ADMIN_REQUIRED]
+    never_when_blocker: [BLOCKED_BY_TENANT_OR_POLICY, FIXED_ENVIRONMENT_CONSTRAINT, AUTH, USER_PRESENCE_REQUIRED, ADMIN_REQUIRED]
     never_to_bypass: [permissions, admin_policy, security_policy, mfa, consent, licensing, billing, production_approval, organization_publication_approval]
   browser_surfaces:
     persistent_identity:
@@ -388,7 +508,7 @@ execution_routing:
       human_presence_requirement: when_mfa_or_consent_requires
       host_fallback_condition: host_or_surface_unavailable_only
     microsoft_tenant_services:
-      capabilities: [microsoft.developer_portal, microsoft.graph.tenant_operations, work_iq.tenant_operations, work_iq.host_composition, wiqd.auth, workiq.upstream_service_principal, workiq.direct_mcp, microsoft.runtime_qualification]
+      capabilities: [microsoft.developer_portal, microsoft.graph.tenant_operations, work_iq.tenant_operations, work_iq.host_composition, wiqd.auth, wiqd.direct_user_share, microsoft_365_copilot.access, azure.subscription_access_for_provisioning, workiq.upstream_service_principal, workiq.direct_mcp, microsoft.runtime_qualification]
       preferred_host: desktop_local
       fallback_host: codex_cloud
       preferred_surface_order: [mcp, cli, api_sdk, supported_browser_ui]
@@ -409,11 +529,70 @@ execution_routing:
       workflow_list_read: RUNTIME_QUALIFIED
       agent_inventory: BLOCKED_BY_TENANT_OR_POLICY
       blocker: prvReadbot
+      blocker_classification: FIXED_ENVIRONMENT_CONSTRAINT
+      lifecycle_available_under_current_entitlements: false
+      qualification_result: CAPABILITY_BLOCKED_BY_FIXED_ENVIRONMENT_CONSTRAINT
+      lab_complete: true
       schema_advertised_operations_are_runtime_qualified: false
       focused_describe_actions_contracts_retrieved: false
       create_update_validate_test_evaluate_cleanup: NOT_TESTED
       no_agent_created: true
-      probe_b_waits_for_inventory_permission_resolution: true
+      probe_b_waits_for_inventory_permission_resolution: false
+      independent_labs_continue: true
+    lab_b_declarative_agent:
+      record: docs/qualification-labs/declarative-agent-lab-b.md
+      date: 2026-10-23
+      commands_discovered_not_executed: [create, validate, package, provision, share, publish, ask, eval, delete]
+      agents_toolkit_route: BLOCKED_BY_FIXED_ENVIRONMENT_CONSTRAINT
+      agents_toolkit_custom_app_upload_required_only_for_that_route: true
+      wiqd_direct_user_share: DOCUMENTED_NOT_RUNTIME_QUALIFIED
+      wiqd_personal_candidate_prerequisites: [declarative_agent.create, declarative_agent.validate, declarative_agent.package, declarative_agent.provision, wiqd.auth, microsoft_365_copilot.access]
+      wiqd_optional_direct_share_candidate_prerequisites: [declarative_agent.create, declarative_agent.validate, declarative_agent.package, declarative_agent.provision, wiqd.auth, wiqd.direct_user_share, microsoft_365_copilot.access]
+      azure_requirement: Conditional on selected provisioning actions; absent from inspected basic local template, subscription capability remains unverified.
+      wiqd_unresolved_prerequisites: [effective_core_tenant_correlation, complete_in_scope_personal_title_name_inventory, complete_resource_cleanup_absence_verification]
+      wiqd_prerequisites_fully_verified: false
+      lifecycle_operations: NOT_TESTED
+      disposition: NO_DEPLOYMENT_ROUTE_RUNTIME_QUALIFIED
+      preflight_status: BLOCKED
+      preflight_evidence: docs/qualification-labs/evidence/lab-b-preflight.json
+      spec_record: docs/qualification-labs/lab-b-corporate-tenant-spec.md
+      spec_identity_source: config/qualification-labs.yaml#labs.B.active_specification
+      target_gate: UNQUALIFIED
+      create_allowed: false
+      corporate_tenant_scope: EXPLICITLY_APPROVED_NEW_PRIVATE_DISPOSABLE_RESOURCE_SET_ONLY
+      effective_core_tenant: OPAQUE_TENANT_REFERENCE_CORRELATION_PENDING
+      complete_resource_cleanup_absence_verification: UNPROVEN
+      cleanup: NOT_TESTED_NO_RESOURCE_CREATED
+    lab_c_host_composed_work_iq:
+      record: docs/qualification-labs/host-composed-work-iq-lab-c.md
+      date: 2026-10-23
+      target: microsoft_365_copilot
+      candidate_existing_agent: Ticket_Notes
+      candidate_knowledge_corpus: COMPLETE_SCOPE_UNVERIFIED_AFTER_PARTIAL_PUBLISHED_METADATA_INSPECTION
+      published_instruction_field_inspected: true
+      unsupported_marker_absence_from_published_instructions: VERIFIED_ABSENT_IN_INSTRUCTION_TEXT_ONLY
+      published_tool_count: 1
+      published_tool_operation_and_schema: NOT_RETAINED_BOUNDED_INFO_RETRY_EXIT_2_EMPTY_STDERR
+      published_tool_retrieval_scope: NOT_VERIFIED
+      authoritative_local_configuration_export: NOT_FOUND_IN_PREVIOUS_BOUNDED_WORKSPACE_SEARCH
+      host_fact_absence_from_candidate_corpus: NOT_VERIFIED
+      unsupported_marker_absence_from_candidate_corpus: NOT_VERIFIED
+      suitable_existing_specialized_agent: CANDIDATE_UNVERIFIED_FOR_CONTEXT_TRANSFER
+      positive_unsupported_boundary_fixtures: DESIGNED_NOT_TESTED
+      runtime_context_transfer: NOT_TESTED
+      fixture_contract_evidence: docs/qualification-labs/evidence/lab-c-fixture-contract.json
+      cleanup: UNNECESSARY_NO_RESOURCE_OR_DATA_CHANGED
+    lab_d_direct_work_iq_mcp:
+      record: docs/qualification-labs/direct-work-iq-mcp-lab-d.md
+      date: 2026-10-23
+      feasibility_assessment: CAPABILITY_BLOCKED_BY_FIXED_ENVIRONMENT_CONSTRAINT
+      prerequisite_evidence_quality: registry_record_only_not_individual_observation
+      individual_tenant_prerequisite_states: NOT_REVERIFIED
+      fixed_prerequisites: [tenant_enablement, delegated_WorkIQAgent.Ask_and_consent, upstream_service_principal, Copilot_Credits_billing_and_spending_policy]
+      authentication_catalog_retrieve_evaluation: NOT_TESTED
+      no_retries_of_known_fixed_constraints: true
+      supported_alternative: work_iq.host_composition
+      host_composed_runtime: NOT_TESTED
     runtime_qualification_is_never_inferred_from_tool_discovery: true
     installed_or_listed_tools_do_not_prove_authentication_or_runtime: true
     known_blockers:
@@ -426,6 +605,7 @@ execution_routing:
       - type: BLOCKED_BY_TENANT_OR_POLICY
         capability: workiq.upstream_service_principal
         reason: Tenant Work IQ service principal is missing.
-      - type: NOT_TESTED
+      - type: FIXED_ENVIRONMENT_CONSTRAINT
         capability: workiq.direct_mcp
-        reason: Direct Work IQ MCP permissions, tenant enablement, and billing readiness remain unverified.
+        evidence_state: NOT_TESTED
+        reason: Existing program/registry premise classifies the route unavailable; underlying dated tenant-specific prerequisite observations are not in this repository and were not reverified in this session.

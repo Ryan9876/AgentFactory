@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "lab": "B",
+  "recorded_date": "2026-10-23",
+  "scope": "Read-only target preflight; no Microsoft resource was created or modified.",
+  "historical_preflight_spec_sha256": "43afbd15acde0c6129dc5884203bf336d3dc0943c58f470c3265969e3e7ca5f8",
+  "qualification_state": "PREFLIGHT_BLOCKED",
+  "target_gate": "UNQUALIFIED",
+  "create_allowed": false,
+  "current_target": {
+    "classification": "LIVE_PRODUCTION",
+    "custom_app_sideloading": "DISABLED_USER_CONFIRMED",
+    "wiqd_provisioning_uses_package_and_sideload_loop": "DOCUMENTATION_VERIFIED",
+    "result": "BLOCKED_FOR_THIS_TARGET"
+  },
+  "alternate_target": {
+    "qualifying_development_or_test_target_identified": false,
+    "inventory_completeness": "NOT_PROVEN"
+  },
+  "azure_subscription": "UNKNOWN",
+  "preflight_gates": {
+    "effective_target_tenant_correlation": "UNVERIFIED",
+    "complete_in_scope_title_inventory": "UNPROVEN",
+    "complete_resource_cleanup_absence_verification": "UNPROVEN"
+  },
+  "cloud_resources_created": false,
+  "deferred_until_target_qualifies": [
+    "collision_check",
+    "cleanup_absence_preflight",
+    "all_lifecycle_operations"
+  ],
+  "evidence_source": "docs/qualification-labs/lab-b-gate-review.md"
+}

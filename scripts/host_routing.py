@@ -8,6 +8,7 @@ EVIDENCE_STATES = {
     "DESIGNED", "IMPLEMENTED", "CLOUD_SYNCHRONIZED", "RUNTIME_QUALIFIED",
     "BLOCKED", "FAILED", "NOT_TESTED", "USER_PRESENCE_REQUIRED", "ADMIN_REQUIRED",
 }
+FIXED_ENVIRONMENT_CONSTRAINT = "FIXED_ENVIRONMENT_CONSTRAINT"
 
 
 def _route_for_capability(registry: Mapping, capability_id: str) -> Mapping | None:
@@ -44,7 +45,9 @@ def choose_execution_route(
     no_hop = set(routing["host_fallback"]["never_when_blocker"])
     preferred_host_failed = blocker == "TOOL_HOST"
     if blocker:
-        status = blocker if blocker in EVIDENCE_STATES | {"BLOCKED_BY_TENANT_OR_POLICY"} else "BLOCKED"
+        status = blocker if blocker in EVIDENCE_STATES | {"BLOCKED_BY_TENANT_OR_POLICY", FIXED_ENVIRONMENT_CONSTRAINT} else "BLOCKED"
+        if blocker == FIXED_ENVIRONMENT_CONSTRAINT:
+            status = "BLOCKED_BY_TENANT_OR_POLICY"
         if blocker in no_hop or not preferred_host_failed:
             return {
                 "status": status, "host": None, "blocker": blocker,

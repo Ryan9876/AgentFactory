@@ -43,7 +43,18 @@ class CapabilityRegistryTests(unittest.TestCase):
         self.assertFalse(probe["schema_advertised_operations_are_runtime_qualified"])
         self.assertEqual(probe["create_update_validate_test_evaluate_cleanup"], "NOT_TESTED")
         self.assertTrue(probe["no_agent_created"])
-        self.assertTrue(probe["probe_b_waits_for_inventory_permission_resolution"])
+        self.assertEqual(probe["blocker_classification"], "FIXED_ENVIRONMENT_CONSTRAINT")
+        self.assertTrue(probe["lab_complete"])
+        self.assertFalse(probe["probe_b_waits_for_inventory_permission_resolution"])
+        self.assertTrue(probe["independent_labs_continue"])
+
+    def test_environment_constraints_separate_platform_support_from_availability(self):
+        constraints = load_yaml(REGISTRY)["environment_constraints"]
+        self.assertTrue(constraints["reevaluate_only_after_explicit_user_change"])
+        inventory = constraints["capability_availability"]["copilot_studio.agent_inventory"]
+        self.assertEqual(inventory["platform_capability"], "documented")
+        self.assertEqual(inventory["environment_availability"], "unavailable")
+        self.assertEqual(inventory["classification"], "FIXED_ENVIRONMENT_CONSTRAINT")
 
     def test_no_duplicate_v1_json_registry_remains_authoritative(self):
         self.assertFalse((ROOT / ".agents/skills/agentfactory/references/capability-registry.json").exists())

@@ -20,3 +20,25 @@ deployment:
 architecture:
   prefer_native_before_custom: true
   verify_current_microsoft_docs_before_mutable_platform_decisions: true
+qualification:
+  entitlement_policy: existing_entitlements_only
+  objective: "Determine what can reliably be built with Ryan's current permissions, licenses, credits, tenant configuration, policies, security roles, and supported development surfaces."
+  fixed_for_program_unless_explicitly_changed: true
+  re_evaluate_only_after: explicit_user_statement_that_an_entitlement_or_policy_changed
+  unavailable_entitlement_remediation:
+    allowed: false
+    forbidden:
+      - request_elevated_privileges_or_security_roles
+      - request_tenant_admin_permissions_or_admin_consent
+      - request_additional_microsoft_365_permissions
+      - request_policy_exceptions_or_sideload_enablement
+      - obtain_additional_copilot_credits_or_paid_licenses
+      - enable_billing_or_spending_policies
+      - create_admin_approved_service_principals
+      - purchase_paid_licensing
+      - change_production_or_tenant-wide_settings
+      - obtain_production-level_access
+  qualification_blockers:
+    fixed_environment_constraint_completes_lab: true
+    continue_independent_labs: true
+    dependent_labs_block_only_when_technically_dependent: true

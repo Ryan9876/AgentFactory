@@ -27,3 +27,6 @@ build/
 *.credentials
 credentials.json
 secrets.json
+
+# Root-local generated state; durable qualification evidence lives in docs/.
+/.agent-factory/

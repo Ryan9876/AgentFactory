@@ -36,7 +36,15 @@ Typical `USER_PRESENCE_REQUIRED` boundaries include MFA, terms acknowledgments, 
 
 Typical `ADMIN_REQUIRED` boundaries include tenant policy changes, admin consent, role/DLP changes, and organization-wide publication when policy requires it.
 
-AgentFactory must stop cleanly at a boundary, provide the exact user/admin action or command, preserve state, and resume after the boundary is satisfied.
+AgentFactory must stop cleanly at a boundary and preserve state. Under this program's existing-entitlements-only rule, an admin-required operation is recorded as a fixed environment constraint; do not provide an administrator request, access request, or command intended to obtain elevated authority. Reject affected architectures before implementation, find a supported route within current entitlements, or mark the capability unavailable. Reevaluate only after Ryan explicitly states the entitlement or policy changed.
+
+## 2.1 Existing-entitlements-only qualification
+
+The objective is to determine what can reliably be built with Ryan's current permissions, licenses, credits, tenant configuration, policies, security roles, and supported development surfaces. It is not to determine what might work after acquiring more authority or spend. Apply `config/constraints.yaml` and `environment_constraints.capability_availability` in `config/capability-registry.yaml` before architecture selection. Platform support and current-environment availability are separate facts.
+
+Classify a proven privilege, license, credit, admin-consent, tenant-policy, service-principal, billing, or sideload boundary as `FIXED_ENVIRONMENT_CONSTRAINT`; keep tool/host failures as `REMEDIABLE_TOOLING_FAILURE` only when they are genuinely remediable. For ordered candidates, use `scripts.config_loader.evaluate_architecture_candidates`: reject candidates with known unavailable prerequisites before build work, choose the first viable lower-complexity candidate, and report `CAPABILITY_UNAVAILABLE_CURRENT_ENVIRONMENT` when all candidates are eliminated. Unknown prerequisites remain unqualified and fail closed. A fixed entry changed to `available` requires its exact capability ID in `confirmed_changed_capabilities`, which may be supplied only after Ryan explicitly confirms that entitlement/policy changed. New evidence can qualify an alternative route without clearing an unrelated fixed constraint. Do not encode today's tenant facts as universal Microsoft capability claims.
+
+Try alternate supported surfaces only when they operate within current authority. An authorization denial cannot trigger browser automation or host hopping. A blocked lab completes when it positively establishes a fixed constraint and its design consequence; continue independent labs, and block another lab only when it technically depends on that capability. A blocked qualification is a valid result, not a repair request.
 
 ## 3. Browser/tool-host rules
 

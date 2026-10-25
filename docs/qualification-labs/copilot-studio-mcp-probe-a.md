@@ -4,6 +4,8 @@
 **Target:** GTM PowerApp - Development (environment ID `763580d9-7ae2-ef77-ac55-8b393205010f`)  
 **Outcome:** `COPILOT_STUDIO_MCP_LIFECYCLE_BLOCKED`
 
+**Qualification disposition:** `CAPABILITY_BLOCKED_BY_FIXED_ENVIRONMENT_CONSTRAINT` — the lab is complete and establishes a current-environment boundary.
+
 This is a bounded Development qualification record. It separates successful runtime-qualified reads from schema-advertised actions and operations that were not attempted. No agent was created, modified, published, tested, evaluated, or deleted.
 
 ## Read-only preflight
@@ -15,7 +17,7 @@ A fresh Copilot Studio MCP process used the supported sign-in flow through Chrom
 | Fresh-process sign-in and Development selection | **RUNTIME_QUALIFIED** | MCP status identified the intended account and Development environment. Authentication was repeated for each fresh server process. |
 | Connection visibility | **RUNTIME_QUALIFIED** | `discover_resources.list_connections` returned three entries. |
 | Workflow visibility | **RUNTIME_QUALIFIED** | `manage_workflows.list` returned two workflows. |
-| Agent visibility | **BLOCKED** | `manage_agents.list` failed because the Development identity lacks `prvReadbot`. This remains a tenant permission boundary. |
+| Agent visibility | **BLOCKED** | `manage_agents.list` failed because the Development identity lacks `prvReadbot`. This is a fixed environment constraint for this program. |
 
 The local package documentation says credentials are process-local and discarded when the server exits. Browser interaction was used for sign-in and account selection. No PAC or Copilot Studio portal fallback was used.
 
@@ -33,9 +35,9 @@ The live action enums were inspected, but focused per-action parameter contracts
 
 ## Lifecycle decision
 
-**Create, update, validate, test, evaluate, and cleanup remain NOT_TESTED.** Since agent inventory was blocked, the preflight could not verify a unique disposable name, rule out a name collision, or prove cleanup. No resource was created, so no cleanup was needed. Stop before creation; do not work around the missing permission.
+**Create, update, validate, test, evaluate, and cleanup remain NOT_TESTED.** Since agent inventory was blocked, the preflight could not verify a unique disposable name, rule out a name collision, or prove cleanup. No resource was created, so no cleanup was needed. The tested Copilot Studio MCP agent-lifecycle route is unavailable under the current entitlements because the identity lacks `prvReadbot`; this is a qualified environmental boundary, not a request to obtain another role. Other supported lifecycle routes may be evaluated only if they work under current entitlements.
 
-Work Radar-era lifecycle constraints remain in force. Prefer Copilot Studio MCP for the lifecycle only after `prvReadbot` is resolved and a unique, reversible create-to-cleanup path can be established. Use PAC as a supported fallback only for operations it exposes. Never bypass tenant permissions. **Probe B should wait** until the inventory/permission boundary is resolved.
+Work Radar-era lifecycle constraints remain in force for this route. Do not assume MCP's advertised lifecycle can be used to build future agents in this environment. Do not use PAC, browser UI, or another host to bypass the authorization boundary; evaluate an alternate route only if it is supported within existing entitlements. Probe A is complete. **Independent Labs B/C/D should continue** when they do not technically depend on this agent-lifecycle capability; skip or end a lab early when a known fixed constraint makes its result predetermined.
 
-No tenant permissions, policies, billing, Production, or publication settings were changed. The separate GitHub push blocker is credential setup on the Mac; complete `gh auth login --hostname github.com --git-protocol https --web` there before retrying the push. Do not send credentials or codes in chat.
+No tenant permissions, policies, billing, Production, or publication settings were changed.
 

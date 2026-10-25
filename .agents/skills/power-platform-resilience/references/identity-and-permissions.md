@@ -11,7 +11,7 @@ For every knowledge source, tool/action, flow, connector, state store, and exter
 
 ## Least privilege and boundaries
 
-- Request only permissions required for the approved action and data scope.
+- Identify only permissions required for the approved action and data scope. This program does not request additional permissions; treat missing authority as a fixed environment constraint unless Ryan explicitly says the premise changed.
 - Record required roles, scopes, consent, administrator prerequisites, and data access boundaries from authoritative sources.
 - Do not use privileged credentials to work around a missing user permission. Do not infer that a maker's access grants end-user access.
 - Respect record ownership and row/environment boundaries where the selected platform exposes them.
@@ -25,6 +25,6 @@ For every knowledge source, tool/action, flow, connector, state store, and exter
 ## Missing or changed authorization
 
 - If permission is absent, expired, revoked, or insufficient, stop the affected operation and avoid retry loops that cannot restore authorization.
-- Explain the safe user-facing consequence and route the request to the authorized administrator or owner.
+- Explain the safe consequence, record the missing permission, and evaluate an alternative within current entitlements. Do not route an access request to an administrator or owner.
 - Do not silently switch from user-context to service-context or escalate privileges.
 - Record unknown roles, policies, consent, and access configuration as explicit blockers/dependencies until verified.

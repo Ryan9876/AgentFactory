@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "lab": "C",
+  "recorded_date": "2026-10-23",
+  "scope": "Local fixture-definition and fail-closed-stop-condition consistency only.",
+  "fixture_contract_state": "SOURCE_QUALIFIED",
+  "runtime_context_transfer": "NOT_TESTED",
+  "all_fixture_runtime_results": "NOT_TESTED",
+  "fixtures": {
+    "positive": {
+      "state": "DESIGNED_NOT_TESTED",
+      "requires_host_fact_absent_from_complete_agent_corpus": true,
+      "requires_host_source_citation": true,
+      "host_fact_or_source_content_retained": false
+    },
+    "unsupported": {
+      "state": "DESIGNED_NOT_TESTED",
+      "requires_marker_absent_from_host_and_complete_agent_corpus": true,
+      "expected_insufficiency_without_guessing": true
+    },
+    "boundary": {
+      "state": "DESIGNED_NOT_TESTED",
+      "expects_safe_non_disclosure_and_no_action": true,
+      "sensitive_output_retained": false
+    }
+  },
+  "runtime_preconditions": {
+    "complete_effective_knowledge_scope_established": false,
+    "complete_tool_retrieval_scope_established": false,
+    "host_fact_absence_from_corpus": "NOT_VERIFIED",
+    "unsupported_marker_absence_from_corpus": "NOT_VERIFIED"
+  },
+  "bounded_candidate_metadata_summary": {
+    "candidate": "Ticket Notes",
+    "published_instructions_field_present": true,
+    "declared_tool_count": 1,
+    "complete_effective_knowledge_scope": "NOT_VERIFIED",
+    "complete_tool_retrieval_scope": "NOT_VERIFIED",
+    "tool_invoked": false
+  },
+  "observed_evidence": {
+    "prompts_sent": 0,
+    "source_content_queries": 0,
+    "declared_tool_invoked": false,
+    "agent_modified": false,
+    "tenant_mutation": false
+  },
+  "cleanup": "UNNECESSARY_NO_RESOURCE_OR_DATA_CHANGED",
+  "next_gate": "A materially new supported read-only source must expose complete effective knowledge and tool-retrieval scope before any runtime fixture."
+}
